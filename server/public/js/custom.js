@@ -1,12 +1,9 @@
 /*------------------------------------------------------------------
-Project:        Landitt
-Author:         Yevgeny Simzikov
-URL:            http://simpleqode.com/
-                https://twitter.com/YevSim
-                https://www.facebook.com/simpleqode
+Project:        HealthWe
+Author:         Steve Zhang
 Version:        1.0.0
-Created:        27/05/2015
-Last change:    27/05/2015
+Created:        07/09/2015
+Last change:    07/09/2015
 -------------------------------------------------------------------*/
 
 /**
@@ -50,13 +47,6 @@ $(".js-toggle-sidebar").on('click', function() {
     $(".sidebar").toggleClass("js-sidebar-aside");
     return false;
 });
-
-function validateForm(name,username,email,pwd,pwd_repeat){
-    if (pwd!=pwd_repeat){
-        return false;
-    }
-    return true;
-}
 
 function checkEmpty(){
     var valueofclass = document.getElementsByClassName("form-control").value;
@@ -103,17 +93,35 @@ $("#sign-up__submit").on('click',function(){
     //event.stopPropagation();
 });
 
-/* submit the signup form */
+$("#signinForm").submit(function(event){
+    event.preventDefault();
+    // Get some values from elements on the page:
+    var $form = $( this ),
+        username = $form.find( "input[name='username']" ).val(),
+        password = $form.find( "input[name='password']").val(),
+        url = $form.attr( "action" );
+
+    // Send the data using post
+    var posting = $.post( url, {username:username,password:password } );
+
+    // Put the results in a div
+    posting.done(function( data ) {
+        console.log('Done'+data);
+        location.replace("/");
+    });
+});
+
+/* submit the signup form
 $("#sign-in__submit").on('click',function(event){
-    var usrname, pwd;
-    usrname = $("#sign-in__username").val();
-    pwd = $("#sign-in__password").val();
-    console.log('username: '+usrname);
+    var username, password;
+    username = $("#sign-in__username").val();
+    password = $("#sign-in__password").val();
+    console.log('username: '+username);
     $.ajax({
         url : "/sign-in",
-        type: "post",
-        timeout: 15000,
-        data:{username:usrname,password:pwd},
+        type: "POST",
+        timeout: 1500,
+        data:{username:username,password:password},
         success: function(data){
             console.log('Done'+data);
             location.replace("/");
@@ -126,6 +134,7 @@ $("#sign-in__submit").on('click',function(event){
         });
     event.stopPropagation();
 });
+*/
 
 /**
  * Smooth scroll to anchor
@@ -212,7 +221,7 @@ $(document).ready(function() {
                     text = i + "/" + maxValue;
 
                     updateChart.text(text)
-                        .change()
+                        .change();
 
                     i = i + step;
 
