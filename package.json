@@ -1,0 +1,28 @@
+{
+  "name": "signintest",
+  "description": "to test sign in of healthwe.com",
+  "private": true,
+  "version": "0.0.1",
+  "author": "Steve Zhang",
+  "scripts": {
+    "start": "node signtest.js"
+  },
+  "dependencies": {
+    "bcrypt": "latest",
+    "body-parser": "^1.7.0",
+    "bookshelf": "^0.8.2",
+    "cookie-parser": "latest",
+    "crypto": "latest",
+    "ejs": "^2.3.4",
+    "express": "latest",
+    "express-session": "latest",
+    "express-validator": "latest",
+    "forever": "latest",
+    "knex": "^0.8.6",
+    "mysql": "latest",
+    "passport": "^0.3.0",
+    "passport-local": "^1.0.0",
+    "path": "^0.11.14",
+    "util": "latest"
+  }
+}

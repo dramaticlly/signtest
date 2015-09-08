@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>HealthWe - 私人睡眠治疗专家</title>
+
+    <!-- CSS Plugins -->
+    <link href="css/plugins/animate.css" rel="stylesheet">
+    <link href="css/plugins/owl.carousel.css" rel="stylesheet">
+    <link href="css/plugins/lightbox.css" rel="stylesheet">
+
+    <!-- CSS Custom -->
+    <link href="css/styles.css" rel="stylesheet">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <!-- SIGN IN
+    ============================== -->
+    <div class="sign-in-up__wrapper">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12">
+
+            <h4 class="heading sign-in-up__heading">用户登陆</h4>
+            <p class="heading__sub sign-in-up-heading__sub">
+              
+            </p>           
+
+            <form class="form_alt sign-in-up__form" role="form">
+              <% if(typeof(errorMessage) !== 'undefined') {%>
+              <span><%= errorMessage %></span>
+              <% } %>
+              <div class="form-group">
+                <label for="sign-in__username" class="sr-only">Username</label>
+                <input type="text" name="username" class="form-control" id="sign-in__username" placeholder="用户名" required="true">
+              </div>
+              <div class="form-group">
+                <label for="sign-in__password" class="sr-only">Password</label>
+                <input type="password" name="password" class="form-control" id="sign-in__password" placeholder="密码" required="true">
+              </div>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> 记住我的登录状态 
+                </label>
+              </div>
+              <button type="submit" class="btn btn-block btn-primary" id="sign-in__submit">登陆</button>
+            </form>
+
+            <!-- Sign Up link -->
+            <!--
+            <div class="sign-in-up__footer">
+              没有账号？ <a href="sign-up.html">现在就去注册</a>
+              -->
+            <div class="sign-in-up__footer">
+              没有账号？ <a href="/sign-up">现在就去注册</a>
+            </div>
+
+          </div>
+        </div>
+      </div> <!-- / .container -->
+    </div> <!-- / .sign-in-up__wrapper -->
+
+
+    <!-- JavaScript
+    ================================================== -->
+    
+    <!-- JS Global -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <!--<script src='https://www.google.com/recaptcha/api.js'></script> -->
+    <script src="js/bootstrap/bootstrap.min.js"></script>
+
+    <!-- JS Plugins -->
+    <script src="js/plugins/smoothscroll.js"></script>
+    <script src="js/plugins/jquery.waypoints.min.js"></script>
+    <script src="js/plugins/wow.min.js"></script>
+    <script src="js/plugins/owl.carousel.min.js"></script>
+    <script src="js/plugins/jquery.peity.min.js"></script>
+    <script src="js/plugins/lightbox.min.js"></script>
+    <!--<script src="js/plugins/contact.js"></script>-->
+
+    <!-- JS Custom -->
+    <script src="js/custom.js"></script>
+
+
+  </body>
+</html>

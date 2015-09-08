@@ -1,0 +1,38 @@
+/**
+ * Forms
+ */
+
+@input-border:                  #eee;
+@input-border-radius:           @border-radius-small;
+@input-border-radius-large:     @input-border-radius;
+@input-border-radius-small:     @input-border-radius;
+@input-border-focus:            #ddd;
+
+
+/* Form controls */
+
+.form-control, .form-control:focus,
+.has-error .form-control, .has-error .form-control:focus {
+  .box-shadow(none);
+}
+.has-error .form-control, .has-error .form-control:focus {
+  border-color: @brand-primary;
+}
+
+/* Form alternative */
+
+.form_alt {
+
+  .form-control {
+    border: 0;
+    background: fade(black,20%);
+    color: white;
+    box-shadow: fade(white,30%) 0px 0px 1px 0px, fade(black,30%) 0px 0px 2px 0px inset;
+    .placeholder(fade(white,50%));
+  }
+
+  .btn {
+    border-radius: @border-radius-small;
+    box-shadow: fade(black,30%) 0px 0px 1px 0px;
+  }
+}

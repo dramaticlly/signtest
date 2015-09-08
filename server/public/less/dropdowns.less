@@ -1,0 +1,49 @@
+/*
+ * Dropdowns
+ */
+
+.navbar .dropdown-menu {
+  border-color: fade(black,5%);
+  box-shadow: 0 15px 25px fade(black,10%);
+  .animation-duration(.3s);
+  
+  > li {
+
+    > a {
+      padding: 7px 25px;
+
+      &:hover, &:focus {
+        background: transparent;
+        color: @brand-primary;
+      }
+    }
+    &.active > a {
+      background: transparent;
+      color: @brand-primary;
+    }
+  }
+
+  > .divider {
+    background-color: #eee;
+  }
+  > .dropdown-header {
+    font-size: @font-size-base;
+    color: gray-light;
+  }
+}
+
+@media(min-width: @grid-float-breakpoint) {
+  .navbar-default .dropdown-menu {
+    border-radius: 4px !important;
+
+    &::before {
+      display: block;
+      position: absolute;
+      top: -(@line-height-computed/2 + 9px); right: 10px;
+      font-family: "Icons";
+      font-size: 18px;
+      content: "\e030";
+      color: white;
+    }
+  }
+}

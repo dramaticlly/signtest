@@ -1,0 +1,49 @@
+/**
+ * Buttons
+ */
+
+#button {
+  .btn(@btn-bg-color, @btn-border-color, @btn-color) {
+    border-radius: @line-height-computed/2 + @padding-base-vertical + 2px;
+    border: 2px solid @btn-border-color;
+    background: @btn-bg-color;
+    color: @btn-color;
+    .transition(all .3s);
+
+    &:hover, &:focus, &:active, &:active:focus {
+      border-color: darken(@btn-border-color,5%);
+      background: darken(@btn-bg-color,5%);
+      color: darken(@btn-color,5%);
+      .box-shadow(none);
+      outline: none;
+    }
+  }
+}
+
+
+//
+// Button styles
+// --------------------------------------------------
+
+.btn-default {
+  #button > .btn(transparent, @gray-light, @gray-light);
+}
+.btn-primary {
+  #button > .btn(@brand-primary, @brand-primary, white);
+}
+
+
+//
+// Button sizes
+// --------------------------------------------------
+
+.btn-lg {
+  border-radius: @line-height-computed/2 + @padding-large-vertical + 2px;
+  font-size: @font-size-base;
+}
+.btn-sm {
+  border-radius: @line-height-computed/2 + @padding-small-vertical + 2px;
+}
+.btn-xs {
+  border-radius: @line-height-computed/2 + @padding-xs-vertical + 2px;
+}

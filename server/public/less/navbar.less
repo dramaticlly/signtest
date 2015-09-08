@@ -1,0 +1,63 @@
+//
+// Navbar
+// --------------------------------------------------
+
+@navbar-height:                         70px;
+
+@navbar-default-color:                  white;
+@navbar-default-bg:                     transparent;
+@navbar-default-link-color:             white;
+@navbar-default-link-hover-color:       @brand-primary;
+@navbar-default-link-active-color:      @brand-primary;
+@navbar-default-link-active-bg:         transparent;
+@navbar-default-brand-color:            white;
+@navbar-default-brand-hover-color:      @brand-primary;
+@navbar-default-toggle-hover-bg:        transparent;
+@navbar-default-toggle-icon-bar-bg:     @brand-third;
+@navbar-default-toggle-border-color:    transparent;
+
+@navbar-inverse-color:                  @text-color;
+@navbar-inverse-bg:                     white;
+@navbar-inverse-link-color:             @text-color;
+@navbar-inverse-link-hover-color:       @brand-primary;
+@navbar-inverse-link-active-color:      @brand-primary;
+@navbar-inverse-link-active-bg:         transparent;
+@navbar-inverse-brand-color:            @text-color;
+@navbar-inverse-brand-hover-color:      @brand-primary;
+@navbar-inverse-toggle-hover-bg:        transparent;
+@navbar-inverse-toggle-icon-bar-bg:     @text-color;
+@navbar-inverse-toggle-border-color:    transparent;
+
+
+/**
+ * Navbar general
+ */
+
+.navbar {
+  border-bottom: 0;
+}
+.navbar-nav > li > a {
+  font-weight: 600;
+}
+.navbar-brand {
+  font-weight: 700;
+}
+.navbar-default {
+  padding-top: 20px;
+}
+.navbar-inverse {
+  box-shadow: 0 5px 5px -3px fade(black,12%);
+}
+
+/**
+ * Navbar separator
+ */
+
+.navbar__separator {
+  border-left: 1px solid @brand-third;
+  height: @line-height-computed;
+  .transition(border-color .3s);
+}
+.navbar-inverse .navbar__separator {
+  border-color: #eee;
+}
