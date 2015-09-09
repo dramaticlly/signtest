@@ -9,8 +9,9 @@ module.exports = function(app) {
 
     // app routing
     app.get('/',function(req,res){
-        console.log(req.body);
+        //console.log(req.body);
         if(req.isAuthenticated()){
+            //TODO, should use UID instead of username. can query username using UID
             var user = req.user;
             //console.log(user);
             if(user) {
@@ -21,7 +22,6 @@ module.exports = function(app) {
 
         }
         else{
-            // in this case, index.html is sign-in html
             res.render('index');
         }
         console.log("You are in sign test");
@@ -89,32 +89,13 @@ module.exports = function(app) {
     });
 
     app.post('/sign-up',function(req,res,next){
-       /* TODO.Temporary cookie test, disable for now
-        if (typeof req.cookie['connect.sid'] !== 'underfined'){
-            console.log(req.cookie['connect.sid']);
-        }
-        */
-        var sess = req.session;
-        sess.suname = req.body.suname;
-        sess.usrname = req.body.usrname;
-        sess.email = req.body.email;
-        sess.pwd = req.body.pwd;
-        sess.pwd_repeat = req.body.pwd_repeat;
-        //console.log("secret:"+req.body);
-        console.log("secret2:"+req.body.key);
-        console.log("name: "+sess.suname);
-        console.log("user name: "+sess.usrname);
-        console.log("email: "+sess.email);
-        console.log("pwd: "+sess.pwd);
-        console.log("pwd_repeat: "+sess.pwd_repeat);
 
         /* validation errors */
+        var addProfile = false;
+        req.checkBody('email','请输入有效的邮箱').isEmail();
+        req.checkBody('password','密码必须在6-20位之间').len(6,20);
+        req.checkBody('password', '两次输入的密码必须一致').equals(req.body.passwordR);
 
-        req.checkBody('email','请输入有效的邮箱').notEmpty().isEmail();
-        req.checkBody('pwd','密码必须在6-20位之间').len(6,20);
-        if (sess.pwd_repeat) {
-            req.checkBody('pwd', '两次输入的密码必须一致').equals(sess.pwd_repeat);
-        }
         var errors = req.validationErrors(true);
         if (errors){
             // if validation erros, send 400, bad request
@@ -124,30 +105,32 @@ module.exports = function(app) {
         /* update errors */
         // up till here, confirm 2 pwd are the same. so no need to pass in to addNewAccount function
         AM.addNewAccount({
-            name    :req.body.suname,
-            user    :req.body.usrname,
+            user    :req.body.username,
             email   :req.body.email,
-            pass    :req.body.pwd
+            pass    :req.body.password
         },function(err,out){
         if (err) {
-            res.status(400).send('error-updating-account');
+            res.status(400).send('error-updating-account: '+err);
         }
         else{
-            res.redirect('/sign-in');
-            res.status(200).send('ok');
-            /* old approach for handle user session myself
-            req.session.user = out;
-                // update the user's login cookies if they exists //
-                // if successful,put into session variable
-            if (req.cookies.user != undefined && req.cookies.pass != undefined){
-                    res.cookie('user', out.user, { maxAge: 900000 });
-                    res.cookie('pass', out.pass, { maxAge: 900000 });
-                }
-
-             */
+            addProfile = true;
             }
         });
-        sess.auth = true;
+        if (addProfile) {
+            AM.addNewProfile({
+                name    :req.body.name,
+                user    :req.body.username,
+                email   :req.body.email
+
+            },function(err,out){
+              if(err){
+                  res.status(400).send('error-updating-profile');
+              }
+                else{
+                  res.redirect('/sign-in');
+              }
+            });
+        }
     });
 
 
@@ -157,7 +140,7 @@ module.exports = function(app) {
             notFound404(req, res, next);
         } else {
             req.logout();
-            res.redirect('/sign-in');
+            res.redirect('/');
         }
     });
 

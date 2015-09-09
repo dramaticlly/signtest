@@ -48,14 +48,22 @@ $(".js-toggle-sidebar").on('click', function() {
     return false;
 });
 
-function checkEmpty(){
+function myvalidate(){
     var valueofclass = document.getElementsByClassName("form-control").value;
+    var pass1 = document.getElementById("#sign-up__password").val();
+    var pass2 = document.getElementById("#sign-up__password_repeat").val();
+    if (pass1 != pass2){
+        document.getElementById('message').innerHTML = "no match";
+        return false;
+    }
     if(!valueofclass){
         return false;
     }
+    return true;
 }
 
-/* submit the signin form */
+
+/* submit the signup form
 $("#sign-up__submit").on('click',function(){
     console.log("i am in sign up submit");
     var suname, usrname, email, pwd, pwd_repeat;
@@ -85,12 +93,33 @@ $("#sign-up__submit").on('click',function(){
         }
     });
     console.log(suname,usrname,email,pwd,pwd_repeat);
-  /*  if (validateForm(suname,usrname,email,pwd,pwd_repeat) == false){
-        alert("您的设置密码和确认密码不一致,请重试");
-        $("sign-up__password_repeat").focus();
-    }
-  */
     //event.stopPropagation();
+});
+*/
+
+$("#signupForm").submit(function(event){
+    event.preventDefault();
+    // Get some values from elements on the page:
+    var $form = $( this ),
+        name        = $("#sign-up__name").val(),
+        username    = $("#sign-up__username").val(),
+        email       = $("#sign-up__email").val(),
+        password    = $("#sign-up__password").val(),
+        passwordR   = $("#sign-up__password_repeat").val(),
+        url         = $form.attr( "action" );
+
+    // Send the data using post
+    $.post( url, {name:name,username:username,email:email,password:password,passwordR:passwordR } )
+        // Put the results in a div
+        .done(function( data ) {
+            console.log('Done'+data);
+            location.replace("/");
+        })
+        .fail(function(xhr,desc,err){
+            console.log(xhr);
+            console.log(desc);
+            console.log(err);
+        });
 });
 
 $("#signinForm").submit(function(event){
@@ -102,12 +131,16 @@ $("#signinForm").submit(function(event){
         url = $form.attr( "action" );
 
     // Send the data using post
-    var posting = $.post( url, {username:username,password:password } );
-
+    $.post( url, {username:username,password:password } )
     // Put the results in a div
-    posting.done(function( data ) {
+    .done(function( data ) {
         console.log('Done'+data);
         location.replace("/");
+    })
+    .fail(function(xhr,desc,err){
+        console.log(xhr);
+        console.log(desc);
+        console.log(err);
     });
 });
 

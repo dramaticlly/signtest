@@ -59,6 +59,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(session({
 	secret:'keyboard_sidsdakdsk12234sdgafasmndadq',
+	cookie:{ secure: true,maxAge: 3600000},
 	resave: true,
 	saveUninitialized:true,
 	store: new MongoStore({ host: '104.131.60.15', port: 27017, db: 'healthWesess'})

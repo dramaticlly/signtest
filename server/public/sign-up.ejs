@@ -41,33 +41,32 @@
             <h4 class="heading sign-in-up__heading">注册</h4>
             <p class="heading__sub sign-in-up-heading__sub">
               网上注册只需花费不到一分钟的时间，便可还您夜夜好梦
-            </p>           
-
-            <form class="form_alt sign-in-up__form" role="form">
+            </p>
+            <form class="form_alt sign-in-up__form" id="signupForm" role="form" action="/sign-up" method="post">
               <div class="form-group">
                 <label for="sign-up__name" class="sr-only">Enter name</label>
-                <input type="text" class="form-control" id="sign-up__name" placeholder="您的姓名" required="true">
+                <input type="text" class="form-control" id="sign-up__name" placeholder="您的姓名" required>
               </div>
               <div class="form-group">
                 <label for="sign-up__username" class="sr-only">Enter username</label>
-                <input type="text" class="form-control" id="sign-up__username" placeholder="用户名" required="true">
+                <input type="text" class="form-control" id="sign-up__username" placeholder="用户名" required>
               </div>
               <div class="form-group">
                 <label for="sign-up__email" class="sr-only">Enter email</label>
-                <input type="email" class="form-control" id="sign-up__email" placeholder="电子邮箱" required="true">
+                <input type="email" class="form-control" id="sign-up__email" placeholder="电子邮箱" required>
               </div>
               <div class="form-group">
                 <div class="row">
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label for="sign-up__password" class="sr-only">Enter password</label>
-                      <input type="password" class="form-control" id="sign-up__password" placeholder="设置密码" required="true">
+                      <input type="password" class="form-control" id="sign-up__password" placeholder="设置密码" required>
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label for="sign-up__password_repeat" class="sr-only">Repeat password</label>
-                      <input type="password" class="form-control" id="sign-up__password_repeat" placeholder="确认密码" required="true">
+                      <input type="password" class="form-control" id="sign-up__password_repeat" placeholder="确认密码" required>
                 <!-- TODO, maybe 需要captcha验证码-->
                     </div>
                   </div>
@@ -78,8 +77,10 @@
                   <input type="checkbox"> 我同意<a href="#">服务条款 </a> 和 <a href="#">网络游戏用户隐私权保护和个人信息利用政策</a>
                 </label>
               </div>
-              <button type="submit" class="btn btn-primary btn-block" id="sign-up__submit" onclick="return checkEmpty()">立即注册</button>
+              <button type="submit" class="btn btn-primary btn-block" id="sign-up__submit" onclick="return myvalidate()">立即注册</button>
             </form>
+            <br />
+            <span id='message'></span>
 
             <!-- Sign In link -->
             <!--

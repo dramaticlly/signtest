@@ -101,10 +101,6 @@ app.listen(app.get('port'),function(){
 
 //var accounts = db.collection('accounts');
 
-exports.manualLogin = function(user, pass, callback){
-
-}
-
 
 /*
 // some function to be used outside this file.
@@ -129,25 +125,19 @@ exports.manualLogin = function(user, pass, callback)
 
 exports.addNewAccount = function (newData,callback) {
     // check if user already exist
-    var useramePromise = null;
-    useramePromise = new Model.User({user_name:newData.user}).fetch();
+    var useramePromise = new Model.User({user_name:newData.user}).fetch();
+    var emailPromise =null;
+    new Model.UserInfo({email:newData.email}).fetch().then(function(ResModel){
+        emailPromise=ResModel;
+    });
     return useramePromise.then(function (model) {
         if(model){
             callback('username-taken');
+        }
+        else if(emailPromise){
+            callback('email-taken');
         }else{
-            /* check if email already exist
-            var emailPromize = null;
-            emailPromize = new Model.UserInfo({email:newData.email}).fetch().then(function(model){
-                if(model){
-                    callback('email-taken');
-                }
-                else{
-                    console.log('email and usrname good');
-                }
-            });
-            */
             var pwd = newData.pass;
-
             //var hash = bcrypt.hashSync(pwd);
             bcrypt.genSalt(10,function(err,salt){
                bcrypt.hash(pwd,salt,function(err,hash){
@@ -162,8 +152,6 @@ exports.addNewAccount = function (newData,callback) {
                    }
                });
             });
-
-
         }
     })
 
