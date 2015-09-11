@@ -121,7 +121,17 @@ exports.manualLogin = function(user, pass, callback)
     });
 }
 */
-
+exports.addNewProfile = function(newData,callback){
+    var uid = -1;
+    new Model.User({user_name:newData.user}).fetch().then(function(ResModel){
+        uid = ResModel.get('id');
+        console.log(uid);
+    }).catch(function(err){
+        if (err){
+            console.error(err);
+        }
+    }).exec(callback);
+}
 
 exports.addNewAccount = function (newData,callback) {
     // check if user already exist
@@ -158,30 +168,6 @@ exports.addNewAccount = function (newData,callback) {
     // hash the password and store
 }
 
-/*
-// database insertion
-exports.addNewAccount = function(newData, callback)
-{
-    accounts.findOne({user:newData.user}, function(e, o) {
-        if (o){
-            callback('username-taken');
-        }	else{ // valid username, may check email account
-            accounts.findOne({email:newData.email}, function(e, o) {
-                if (o){
-                    callback('email-taken');
-                }	else{ //valid username and email account, may proceed
-                    saltAndHash(newData.pass, function(hash){
-                        newData.pass = hash;
-                        // append date stamp when record was created //
-                        newData.date = moment().format('MMMM Do YYYY, h:mm:ss a');
-                        accounts.insert(newData, {safe: true}, callback);
-                    });
-                }
-            });
-        }
-    });
-}
-*/
 
 /*
 // some private function, mostly security concerns

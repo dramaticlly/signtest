@@ -89,7 +89,6 @@ module.exports = function(app) {
     });
 
     app.post('/sign-up',function(req,res,next){
-
         /* validation errors */
         var addProfile = false;
         req.checkBody('email','请输入有效的邮箱').isEmail();
@@ -99,15 +98,16 @@ module.exports = function(app) {
         var errors = req.validationErrors(true);
         if (errors){
             // if validation erros, send 400, bad request
+            // TODO, display form validation errors to user
             res.status(400).send('There have been validation errors: '+util.inspect(errors));
             return;
         }
         /* update errors */
         // up till here, confirm 2 pwd are the same. so no need to pass in to addNewAccount function
         AM.addNewAccount({
-            user    :req.body.username,
-            email   :req.body.email,
-            pass    :req.body.password
+            user    :req.body.username.trim(),
+            email   :req.body.email.toLowerCase().trim(),
+            pass    :req.body.password.trim()
         },function(err,out){
         if (err) {
             res.status(400).send('error-updating-account: '+err);
@@ -118,10 +118,11 @@ module.exports = function(app) {
             }
         });
         if (addProfile) {
+            //TODO, the username and passport are case sensitive right now
             AM.addNewProfile({
-                name    :req.body.name,
-                user    :req.body.username,
-                email   :req.body.email
+                name    :req.body.name.trim(),
+                user    :req.body.username.trim(),
+                email   :req.body.email.toLowerCase().trim()
 
             },function(err,out){
               if(err){

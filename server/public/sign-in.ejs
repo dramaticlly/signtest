@@ -37,12 +37,12 @@
             <h4 class="heading sign-in-up__heading">用户登陆</h4>
             <p class="heading__sub sign-in-up-heading__sub">
               
-            </p>           
+            </p>
+            <% if(typeof(errorMessage) !== 'undefined') {%>
+            <span><%= errorMessage %></span>
+            <% } %>
 
-            <form class="form_alt sign-in-up__form" id="signinForm" role="form" action="/sign-in" method="post">
-              <% if(typeof(errorMessage) !== 'undefined') {%>
-              <span><%= errorMessage %></span>
-              <% } %>
+            <form class="form_alt sign-in-up__form" id="signinForm" role="form" action="/sign-in" method="POST">
               <div class="form-group">
                 <label for="sign-in__username" class="sr-only">Username</label>
                 <input type="text" name="username" class="form-control" id="sign-in__username" placeholder="用户名" required>
