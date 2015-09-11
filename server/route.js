@@ -113,6 +113,7 @@ module.exports = function(app) {
             res.status(400).send('error-updating-account: '+err);
         }
         else{
+            res.redirect('/sign-in');
             addProfile = true;
             }
         });
