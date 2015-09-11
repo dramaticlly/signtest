@@ -17,7 +17,13 @@ module.exports = function(app) {
             if(user) {
                 user = user.toJSON();
             }
+            var uid = user.id;
+            var userinfo=null;
+            //new Model.UserInfo({id:uid}).fetch().then(function(resModel){
+            //    userinfo=resModel;
+            //}).catch();
             console.log('your username is: ' + user.user_name + ". ");
+            console.log('your uid is: ' + uid + ". ");
             res.render('test',{title:'home',user:user});
 
         }
