@@ -154,12 +154,16 @@ exports.addNewAccount = function (newData,callback) {
                    if (err){
                        console.log(err);
                    }else {
-                       console.log('pwd' + pwd + ' hash' + hash);
                        var signUpUser = new Model.User({user_name:newData.user,PASSWORD:hash});
-                       signUpUser.save().catch(function(err){
-                           console.error(err);
-                       }).exec(callback);
-                   }
+                       signUpUser.save().then(function(){
+                           console.log(">>Successful Created a New UserAccount");
+                           console.log("username: "+newData.user);
+                           console.log('pwd     : ' + pwd + ' hash:' + hash);
+                           callback();
+                       }).catch(function(err){
+                               console.error(err);
+                           });
+                       };
                });
             });
         }

@@ -65,7 +65,7 @@ function myvalidate(){
 
 /* submit the signup form
 $("#sign-up__submit").on('click',function(){
-    console.log("i am in sign up submit");
+    console.g("i am in sign up submit");
     var suname, usrname, email, pwd, pwd_repeat;
     suname = $("#sign-up__name").val();
     usrname = $("#sign-up__username").val();
@@ -106,10 +106,11 @@ $("#signupForm").submit(function(event){
         email       = $("#sign-up__email").val(),
         password    = $("#sign-up__password").val(),
         passwordR   = $("#sign-up__password_repeat").val(),
+        address     = $("#sign-up__address").val(),
         url         = $form.attr( "action" );
 
     // Send the data using post
-    $.post( url, {name:name,username:username,email:email,password:password,passwordR:passwordR } )
+    $.post( url, {name:name,username:username,email:email,password:password,passwordR:passwordR,address:address } )
         // Put the results in a div
         .done(function( data ) {
             console.log('Done'+data);

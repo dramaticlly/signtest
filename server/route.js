@@ -128,7 +128,8 @@ module.exports = function(app) {
             AM.addNewProfile({
                 name    :req.body.name.trim(),
                 user    :req.body.username.trim(),
-                email   :req.body.email.toLowerCase().trim()
+                email   :req.body.email.toLowerCase().trim(),
+                address :req.body.address.trim()
 
             },function(err,out){
               if(err){
@@ -145,7 +146,8 @@ module.exports = function(app) {
 
     app.get('/logout',function(req,res,next){
         if(!req.isAuthenticated()) {
-            notFound404(req, res, next);
+            //TODO, help user navigate back to homepage
+            res.status(404).send("Unable to find requested page");
         } else {
             req.logout();
             res.redirect('/');
