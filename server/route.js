@@ -49,7 +49,7 @@ module.exports = function(app) {
      ask for authentication
      */
     app.get('/sign-in',function(req,res){
-        console.log("You are in sigin get");
+        //console.log("You are in sigin get");
         if(req.isAuthenticated()) {
             res.redirect('/');
         } else {
@@ -111,16 +111,19 @@ module.exports = function(app) {
         /* update errors */
         // up till here, confirm 2 pwd are the same. so no need to pass in to addNewAccount function
         AM.addNewAccount({
-            user    :req.body.username.trim(),
-            email   :req.body.email.toLowerCase().trim(),
-            pass    :req.body.password.trim()
+            user        :req.body.username.trim(),
+            name        :req.body.name.trim(),
+            email       :req.body.email.toLowerCase().trim(),
+            pass        :req.body.password.trim(),
+            address     :req.body.address.trim(),
+            dateofbirth :"2008-7-04"
         },function(err,out){
         if (err) {
             res.status(400).send('error-updating-account: '+err);
         }
         else{
             res.redirect('/sign-in');
-            addProfile = true;
+            //addProfile = true;
             }
         });
         if (addProfile) {

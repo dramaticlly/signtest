@@ -5,7 +5,7 @@
   "version": "0.0.1",
   "author": "Steve Zhang",
   "scripts": {
-    "start": "node signtest.js"
+    "start": "node app.js"
   },
   "dependencies": {
     "bcrypt": "latest",
@@ -23,6 +23,7 @@
     "passport": "^0.3.0",
     "passport-local": "^1.0.0",
     "path": "^0.11.14",
-    "util": "latest"
+    "util": "latest",
+    "connect-mongo": "~0.8.2"
   }
 }

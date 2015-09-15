@@ -123,12 +123,13 @@ exports.manualLogin = function(user, pass, callback)
 */
 exports.addNewProfile = function(newData,callback){
     var uid = -1;
-    new Model.User({user_name:newData.user}).fetch().then(function(ResModel){
-        uid = ResModel.get('id');
+    new Model.User({user_name:newData.user}).fetch().then(function(user){
+        uid = user.get('id');
         console.log(uid);
     }).catch(function(err){
         if (err){
             console.error(err);
+            callback(err);
         }
     }).exec(callback);
 }
@@ -153,15 +154,47 @@ exports.addNewAccount = function (newData,callback) {
                bcrypt.hash(pwd,salt,function(err,hash){
                    if (err){
                        console.log(err);
+                       callback(err);
                    }else {
                        var signUpUser = new Model.User({user_name:newData.user,PASSWORD:hash});
-                       signUpUser.save().then(function(){
-                           console.log(">>Successful Created a New UserAccount");
-                           console.log("username: "+newData.user);
-                           console.log('pwd     : ' + pwd + ' hash:' + hash);
-                           callback();
+                       var uid = 0;
+                       signUpUser.save()
+                           .then(function(savedUser){
+                           uid = savedUser.get("id");
+                           console.log(savedUser.toJSON());
+                           //create user info and then save
+                           if (uid != 0){
+                           //create new userInfo obj in db
+                          var signupUinfo = new Model.UserInfo({
+                               ID           :uid,
+                               name         :newData.name,
+                               email        :newData.email,
+                               ADDRESS      :newData.address,
+                               dateofbirth  :newData.dateofbirth
+                           });
+                               //I have a feeling that it might be due to the fact that since you're specifying a primary key,
+                               //it's trying to run an UPDATE rather than an INSERT, which you'd work around
+                               // by specifying {method: 'insert'} in the options hash
+                              signupUinfo.save(null,{method:'insert'}).then(function(newmodel){
+                                   console.log(newmodel.toJSON());
+                                   callback();
+                           }).catch(function(err){//save err
+                                   console.log("Unable to create&save userProfile "+err);
+                                   callback(err);
+                               });
+
+                          /* }).catch(function(err){//create err
+                               console.err("Unable to create userProfile "+err);
+                               callback(err);
+                           }); */
+
+                          }
+                           else{
+                               callback("uid-error");
+                           }
                        }).catch(function(err){
-                               console.error(err);
+                               console.log("Unable to save userAccount " +err);
+                               callback(err);
                            });
                        };
                });
