@@ -13,19 +13,40 @@ module.exports = function(app) {
         if(req.isAuthenticated()){
             //TODO, should use UID instead of username. can query username using UID
             var user = req.user;
+
             //console.log(user);
             if(user) {
                 user = user.toJSON();
+                console.log(user);
             }
             var uid = user.id;
-            var userinfo=null;
-            //new Model.UserInfo({id:uid}).fetch().then(function(resModel){
-            //    userinfo=resModel;
-            //}).catch();
-            console.log('your username is: ' + user.user_name + ". ");
-            console.log('your uid is: ' + uid + ". ");
-            res.render('test',{title:'home',user:user});
-
+            var PromisedUinfo = AM.getProfile(uid,function(err,out){
+                if(err){
+                    res.status(400).send('error-retriving-profile: '+err.stack);
+                }
+                if(out){
+                    if(typeof out === "object"){
+                        console.log(">>obj[out]: ");
+                       // console.log(out.toJSON());
+                         var theuser = {
+                            username:user.user_name,
+                            name    :out.name,
+                            email   :out.email,
+                            gender  :"男",
+                            dob     :out.dateofbirth,
+                            phone   :"13345678901",
+                            address :out.ADDRESS
+                        };
+                        console.log(">>The User");
+                        //console.log(theuser.toJSON());
+                        res.render('test',{title:'home',user:theuser});
+                    }
+                    else {
+                        console.log(out);
+                    }
+                }
+            });
+            console.log(">>Promised: "+PromisedUinfo.toJSON());
         }
         else{
             res.render('index');
@@ -123,26 +144,8 @@ module.exports = function(app) {
         }
         else{
             res.redirect('/sign-in');
-            //addProfile = true;
             }
         });
-        if (addProfile) {
-            //TODO, the username and passport are case sensitive right now
-            AM.addNewProfile({
-                name    :req.body.name.trim(),
-                user    :req.body.username.trim(),
-                email   :req.body.email.toLowerCase().trim(),
-                address :req.body.address.trim()
-
-            },function(err,out){
-              if(err){
-                  res.status(400).send('error-updating-profile');
-              }
-                else{
-                  res.redirect('/sign-in');
-              }
-            });
-        }
     });
 
 
@@ -152,6 +155,7 @@ module.exports = function(app) {
             //TODO, help user navigate back to homepage
             res.status(404).send("Unable to find requested page");
         } else {
+            console.log("User has log out");
             req.logout();
             res.redirect('/');
         }

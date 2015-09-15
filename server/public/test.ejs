@@ -5,21 +5,21 @@
 </head>
 <body>
 <p>
-    Welcome <strong><%= user.user_name %></strong>
+    Welcome <strong><%= user.username %></strong>
     <br />
     您的姓名是 <%= user.name %>
     <br />
     您的邮箱是 <%= user.email %>
     <br />
-    您的性别为
+    您的性别为 <%= user.gender %>
     <br />
-    您的年龄为
+    您的出身日期为 <%= user.dob %>
     <br />
-    您的手机为
+    您的手机为 <%= user.phone %>
     <br />
-    您的地址为
+    您的地址为 <%= user.address %>
     <br />
-    您所在城市为
+    您所在城市为宁波
     <br />
     <a href="/logout" title="log out">log out</a>
 </p>

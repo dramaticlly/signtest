@@ -121,17 +121,19 @@ exports.manualLogin = function(user, pass, callback)
     });
 }
 */
-exports.addNewProfile = function(newData,callback){
-    var uid = -1;
-    new Model.User({user_name:newData.user}).fetch().then(function(user){
-        uid = user.get('id');
-        console.log(uid);
+exports.getProfile = function(uid,callback){
+    if (uid < 1){
+        callback("Invalid uid");
+    }
+    var retModel = Model.UserInfo.where({ID:uid}).fetch({required: true});
+     return retModel.then(function(model){
+     //Promised obj has 4 attr, isFulfilled/isRejected/fulfillmentValue/rejectonReason
+        //console.log(model.toJSON());
+        var tes = model.attributes;
+        callback(null,tes);
     }).catch(function(err){
-        if (err){
-            console.error(err);
-            callback(err);
-        }
-    }).exec(callback);
+        console.log(err.stack);
+    });
 }
 
 exports.addNewAccount = function (newData,callback) {
