@@ -48,6 +48,7 @@ $(".js-toggle-sidebar").on('click', function() {
     return false;
 });
 
+/*
 function myvalidate(){
     var valueofclass = document.getElementsByClassName("form-control").value;
     var pass1 = document.getElementById("#sign-up__password").val();
@@ -61,7 +62,7 @@ function myvalidate(){
     }
     return true;
 }
-
+*/
 
 /* submit the signup form
 $("#sign-up__submit").on('click',function(){
@@ -107,10 +108,22 @@ $("#signupForm").submit(function(event){
         password    = $("#sign-up__password").val(),
         passwordR   = $("#sign-up__password_repeat").val(),
         address     = $("#sign-up__address").val(),
+        phone       = $("#sign-up__phone").val(),
+        gender      = $form.find( "input[name='gender']:checked" ).val(),
         url         = $form.attr( "action" );
 
     // Send the data using post
-    $.post( url, {name:name,username:username,email:email,password:password,passwordR:passwordR,address:address } )
+    console.log("Gender: ");
+    console.log(gender);
+    /*
+    $.post( url, {
+        name    :name,
+        username:username,
+        email   :email,
+        password:password,
+        passwordR:passwordR,
+        address :address,
+        phone   :phone })
         // Put the results in a div
         .done(function( data ) {
             console.log('Done'+data);
@@ -121,6 +134,7 @@ $("#signupForm").submit(function(event){
             console.log(desc);
             console.log(err);
         });
+    */
 });
 
 $("#signinForm").submit(function(event){
