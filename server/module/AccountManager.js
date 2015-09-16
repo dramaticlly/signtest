@@ -172,6 +172,8 @@ exports.addNewAccount = function (newData,callback) {
                                name         :newData.name,
                                email        :newData.email,
                                ADDRESS      :newData.address,
+                               phone        :newData.phone,
+                               gender       :newData.gender,
                                dateofbirth  :newData.dateofbirth
                            });
                                //I have a feeling that it might be due to the fact that since you're specifying a primary key,

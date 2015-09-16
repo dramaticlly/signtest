@@ -110,12 +110,16 @@ $("#signupForm").submit(function(event){
         address     = $("#sign-up__address").val(),
         phone       = $("#sign-up__phone").val(),
         gender      = $form.find( "input[name='gender']:checked" ).val(),
+    // TODO : CHECK BIRTHDATE RANGE..otherwise will not be stored into mysql
+        bod         = $("#sign-up__bod").val(),
         url         = $form.attr( "action" );
 
     // Send the data using post
     console.log("Gender: ");
     console.log(gender);
-    /*
+    console.log("bod");
+    console.log(bod);
+
     $.post( url, {
         name    :name,
         username:username,
@@ -123,6 +127,8 @@ $("#signupForm").submit(function(event){
         password:password,
         passwordR:passwordR,
         address :address,
+        bod     :bod,
+        gender  :gender,
         phone   :phone })
         // Put the results in a div
         .done(function( data ) {
@@ -134,7 +140,7 @@ $("#signupForm").submit(function(event){
             console.log(desc);
             console.log(err);
         });
-    */
+
 });
 
 $("#signinForm").submit(function(event){

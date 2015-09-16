@@ -53,13 +53,27 @@
               </div>
               <div class="form-group">
                 <label for="sign-up__email" class="sr-only">Enter email</label>
-                <input type="text" class="form-control" id="sign-up__email" placeholder="电子邮箱" required>
+                <input type="email" class="form-control" id="sign-up__email" placeholder="电子邮箱" required>
+              </div>
+              <div class="form-group">
+                <label for="sign-up__phone" class="sr-only">Enter phone</label>
+                <input type="text" class="form-control" id="sign-up__phone" placeholder="手机" required>
               </div>
               <div class="form-group">
                 <label for="sign-up__address" >您的家庭住址</label>
                 <select name="province" onChange = "geolocationselect()"></select>
                 <select name="city" onChange = "geolocationselect()"></select>
                 <input type="text" class="form-control" id="sign-up__address" name="address" required>
+              </div>
+              <div class="form-group">
+                <label for="sign-up__gender" class="sr-only">Enter gender</label>
+                <input type="radio" name="gender" value="m" checked> 男&nbsp&nbsp
+                <input type="radio" name="gender" value="f"> 女&nbsp&nbsp
+              </div>
+              <!-- date picker do not support IE/firefox browser-->
+              <div class="form-group">
+                <label for="sign-up__bod" class="sr-only">Enter bod</label>
+                <input type="text" class="form-control" pattern="\d{4}-\d{1,2}-\d{1,2}" placeholder="出身日期 yyyy-mm-dd" id="sign-up__bod">
               </div>
               <div class="form-group">
                 <div class="row">

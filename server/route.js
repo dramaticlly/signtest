@@ -32,9 +32,9 @@ module.exports = function(app) {
                             username:user.user_name,
                             name    :out.name,
                             email   :out.email,
-                            gender  :"男",
+                            gender  :out.gender,
                             dob     :out.dateofbirth,
-                            phone   :"13345678901",
+                            phone   :out.phone,
                             address :out.ADDRESS
                         };
                         console.log(">>The User");
@@ -117,9 +117,9 @@ module.exports = function(app) {
 
     app.post('/sign-up',function(req,res,next){
         /* validation errors */
-        var addProfile = false;
         req.checkBody('email','请输入有效的邮箱').isEmail();
         req.checkBody('password','密码必须在6-20位之间').len(6,20);
+        //req.checkBody('phone','手机必须是数字').isInt();
         req.checkBody('password', '两次输入的密码必须一致').equals(req.body.passwordR);
 
         var errors = req.validationErrors(true);
@@ -137,7 +137,10 @@ module.exports = function(app) {
             email       :req.body.email.toLowerCase().trim(),
             pass        :req.body.password.trim(),
             address     :req.body.address.trim(),
-            dateofbirth :"2008-7-04"
+            phone       :req.body.phone.trim(),
+            gender      :req.body.gender,
+            dateofbirth :req.body.bod.trim()
+            //dateofbirth :"2008-7-04"
         },function(err,out){
         if (err) {
             res.status(400).send('error-updating-account: '+err);
