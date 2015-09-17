@@ -36,11 +36,11 @@
 
             <h4 class="heading sign-in-up__heading">用户登陆</h4>
             <p class="heading__sub sign-in-up-heading__sub">
-              
-            </p>
-            <% if(typeof(errorMessage) !== 'undefined') {%>
-            <span><%= errorMessage %></span>
+              <% if(typeof(errorMessage)!=='undefined') {%>
+              Message: <span><%= errorMessage %></span>
             <% } %>
+            </p>
+
 
             <form class="form_alt sign-in-up__form" id="signinForm" role="form" action="/sign-in" method="POST">
               <div class="form-group">

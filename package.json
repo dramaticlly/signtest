@@ -11,6 +11,8 @@
     "bcrypt": "latest",
     "body-parser": "^1.7.0",
     "bookshelf": "^0.8.2",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "~0.8.2",
     "cookie-parser": "latest",
     "crypto": "latest",
     "ejs": "^2.3.4",
@@ -23,7 +25,6 @@
     "passport": "^0.3.0",
     "passport-local": "^1.0.0",
     "path": "^0.11.14",
-    "util": "latest",
-    "connect-mongo": "~0.8.2"
+    "util": "latest"
   }
 }

@@ -42,7 +42,7 @@
             <p class="heading__sub sign-in-up-heading__sub">
               网上注册只需花费不到一分钟的时间，便可还您夜夜好梦
             </p>
-            <form class="form_alt sign-in-up__form" id="signupForm" name="suForm" role="form" action="/sign-up" method="POST">
+            <form class="form_alt sign-in-up__form" id="signupForm" name="suForm" role="form" action="/sign-up" method="POST" onsubmit="return checkBOD(this.bod)">
               <div class="form-group">
                 <label for="sign-up__name" class="sr-only">Enter name</label>
                 <input type="text" class="form-control" id="sign-up__name" placeholder="您的姓名" required>
@@ -73,7 +73,7 @@
               <!-- date picker do not support IE/firefox browser-->
               <div class="form-group">
                 <label for="sign-up__bod" class="sr-only">Enter bod</label>
-                <input type="text" class="form-control" pattern="\d{4}-\d{1,2}-\d{1,2}" placeholder="出身日期 yyyy-mm-dd" id="sign-up__bod">
+                <input type="text" class="form-control" pattern="\d{4}-\d{1,2}-\d{1,2}" placeholder="出身日期 yyyy-mm-dd" id="sign-up__bod" name="bod">
               </div>
               <div class="form-group">
                 <div class="row">

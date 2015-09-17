@@ -43,6 +43,7 @@ module.exports = function(app) {
                     }
                     else {
                         console.log(out);
+                        res.status(400).send("error found. process exit");
                     }
                 }
             });
@@ -74,6 +75,7 @@ module.exports = function(app) {
         if(req.isAuthenticated()) {
             res.redirect('/');
         } else {
+            console.log("Not Authenticated yet");
             res.render('sign-in');
         }
     });
@@ -91,6 +93,7 @@ module.exports = function(app) {
                 return res.render('sign-in',{errorMessage: err.message});
             }
             if (!user) {
+                console.log(info.message);
                 return res.render('sign-in',{errorMessage: info.message});
             }
             return req.logIn(user, function (err) {
@@ -103,8 +106,6 @@ module.exports = function(app) {
                 }
             });
           })(req,res,next);
-        //TODO, send keyofsessionid back, so can keep track of userprofile
-        //res.send('Done');
     });
 
     app.get('/sign-up',function(req,res){

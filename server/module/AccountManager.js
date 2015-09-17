@@ -129,9 +129,16 @@ exports.getProfile = function(uid,callback){
      return retModel.then(function(model){
      //Promised obj has 4 attr, isFulfilled/isRejected/fulfillmentValue/rejectonReason
         //console.log(model.toJSON());
-        var tes = model.attributes;
-        callback(null,tes);
-    }).catch(function(err){
+        if(model) {
+            var tes = model.attributes;
+            callback(null, tes);
+        }
+         else {
+            callback(null, "User Not Exist");
+        }
+    }).catch(Model.UserInfo.NotFoundError,function(){
+        callback(err='user profile cannot be found',null);
+     }).catch(function(err){
         console.log(err.stack);
     });
 }

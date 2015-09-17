@@ -64,6 +64,42 @@ function myvalidate(){
 }
 */
 
+function checkBOD(field){
+    var allowBlank = true;
+    var minYear    = 1902;
+    var maxYear    = (new Date()).getFullYear();
+    var errorMsg   = "";
+
+    // Original JavaScript code by Chirp Internet: www.chirp.com.au
+    // Please acknowledge use of this code by including this header.
+
+    console.log("max year: "+maxYear);
+
+    re = /^(\d{4})\-(\d{1,2})\-(\d{1,2})$/;
+    if (field.value != ''){
+        if(regs = field.value.match(re)) {
+            if (regs[3] < 1 || regs[3] > 31) {
+                errorMsg = "请输入正确格式的日期 1-31: " + regs[3];
+            }else if(regs[2] < 1 || regs[2] > 12) {
+                errorMsg = "请输入正确格式的月份 1-12: " + regs[2];
+            }else if(regs[1] < minYear || regs[1] > maxYear) {
+                errorMsg = "请输入真实出身年份: " + regs[1] + " - 下限 " + minYear + " 上限 " + maxYear;
+            }
+        } else {
+            errorMsg = "请输入正确的年月日格式: " + field.value;
+        }
+    } else if(!allowBlank) {
+            errorMsg = "出身日期必须填写";
+        }
+
+    if(errorMsg != "") {
+        alert(errorMsg);
+        field.focus();
+        return false;
+    }
+    return true;
+}
+
 /* submit the signup form
 $("#sign-up__submit").on('click',function(){
     console.g("i am in sign up submit");
@@ -120,6 +156,7 @@ $("#signupForm").submit(function(event){
     console.log("bod");
     console.log(bod);
 
+   /*
     $.post( url, {
         name    :name,
         username:username,
@@ -140,7 +177,7 @@ $("#signupForm").submit(function(event){
             console.log(desc);
             console.log(err);
         });
-
+   */
 });
 
 $("#signinForm").submit(function(event){
