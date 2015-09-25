@@ -4,7 +4,7 @@ var bodyParser 	  = require('body-parser');
 var session 	  = require('express-session');
 var cookieParser  = require('cookie-parser');
 var mysql		  = require('mysql');
-//var flash 		  = require('connect-flash');
+var flash 		  = require('express-flash');
 var ejs 		  = require('ejs');
 var path 		  = require('path');
 var MongoStore 	  = require('connect-mongo')(session);
@@ -65,7 +65,7 @@ app.use(session({
 	saveUninitialized:true,
 	store: new MongoStore({ host: '104.131.60.15', port: 27017, db: 'healthWesess'})
 }));
-//app.use(flash());
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 

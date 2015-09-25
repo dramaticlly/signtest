@@ -17,6 +17,7 @@
     "crypto": "latest",
     "ejs": "^2.3.4",
     "express": "latest",
+    "express-flash": "0.0.2",
     "express-session": "latest",
     "express-validator": "latest",
     "forever": "latest",

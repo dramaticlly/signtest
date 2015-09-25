@@ -3,6 +3,7 @@
  */
 var util          = require('util');
 var passport      = require('passport');
+var flash         = require('express-flash');
 
 var AM            = require('./module/AccountManager');
 module.exports = function(app) {

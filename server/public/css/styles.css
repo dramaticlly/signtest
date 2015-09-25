@@ -7608,7 +7608,7 @@ footer a {
   background-image: linear-gradient(to bottom, #6c5b7b 0%, #355c7d 100%);
   background-repeat: repeat-x;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff6c5b7b', endColorstr='#ff355c7d', GradientType=0);
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.8);
 }
 .sign-in-up__heading {
   color: white;

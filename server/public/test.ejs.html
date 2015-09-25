@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= title %></title>
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="sign-in-up__wrapper">
+    <div class="container">
+        <div class="row">
+            < class="col-xs-12">
+                <legend style="color: white">Welcome <strong><%= user.username %></strong></legend>
+                <p class="heading__sub sign-in-up-heading__sub"> Profile Information </p>
+                <br />
+                <label >您的姓名是</label>
+                <input type="text" value="123<%= user.name %>" readonly>
+                <br />
+                您的邮箱是 <%= user.email %>
+                <br />
+                您的性别为 <%= user.gender %>
+                <br />
+                您的出身日期为 <%= user.dob %>
+                <br />
+                您的手机为 <%= user.phone %>
+                <br />
+                您的地址为 <%= user.address %>
+                <br />
+                您所在城市为宁波
+                <br />
+                <a href="/logout" title="log out">log out</a>
+
+            </div>
+        </div>
+    </div> <!-- / .container -->
+</div> <!-- / .sign-in-up__wrapper -->
+
+</body>
+</html>

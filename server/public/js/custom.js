@@ -156,7 +156,7 @@ $("#signupForm").submit(function(event){
     console.log("bod");
     console.log(bod);
 
-   /*
+
     $.post( url, {
         name    :name,
         username:username,
@@ -177,7 +177,6 @@ $("#signupForm").submit(function(event){
             console.log(desc);
             console.log(err);
         });
-   */
 });
 
 $("#signinForm").submit(function(event){
