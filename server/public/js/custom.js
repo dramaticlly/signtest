@@ -201,6 +201,30 @@ $("#signinForm").submit(function(event){
     });
 });
 
+$("#forgetForm").submit(function(event){
+    event.preventDefault();
+    // Get some values from elements on the page:
+    var $form = $( this ),
+        email = $form.find( "input[name='email']" ).val(),
+        url = $form.attr( "action" );
+
+    console.log("The email address is: "+email);
+    // Send the data using post
+    /*
+    $.post( url, {email:email} )
+        // Put the results in a div
+        .done(function( data ) {
+            console.log('Done'+data);
+           // location.replace("/");
+        })
+        .fail(function(xhr,desc,err){
+            console.log(xhr);
+            console.log(desc);
+            console.log(err);
+        });
+    */
+});
+
 /* submit the signup form
 $("#sign-in__submit").on('click',function(event){
     var username, password;

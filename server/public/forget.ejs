@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><%= title %></title>
+    <link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="sign-in-up__wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                {{#if messages}}
+                <div id="flash-messages" class="container">
+                    {{#if messages.info}}
+                    <div class="alert alert-info">
+                        {{{flashMessages messages.info}}}
+                    </div>
+                    {{/if}}
+                    {{#if messages.success}}
+                    <div class="alert alert-success">
+                        {{{flashMessages messages.success}}}
+                    </div>
+                    {{/if}}
+                    {{#if messages.warning}}
+                    <div class="alert alert-warning">
+                        {{{flashMessages messages.warning}}}
+                    </div>
+                    {{/if}}
+                    {{#if messages.error}}
+                    <div class="alert alert-danger">
+                        {{{flashMessages messages.error}}}
+                    </div>
+                    {{/if}}
+                </div>
+                {{/if}}
+                <form class="form_alt sign-in-up__form" id="forgetForm" name="fgForm" role="form" action="/forget" method="POST">
+                    <fieldset>
+                        <legend style="color: white">Forget Password</legend>
+                        <p>请输入您的邮箱地址,我们会向已经注册的邮箱发送重设密码的链接</p>
+                        <div class="form-group">
+                            <label for="forget__email" class="sr-only">Enter email</label>
+                            <input type="email" class="form-control" id="forget__email" name="email" placeholder="电子邮箱" autofocus=true required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="forget__submit">找回密码</button>
+
+                    </fieldset>
+                </form>
+
+            </div>
+        </div>
+    </div> <!-- / .container -->
+</div> <!-- / .sign-in-up__wrapper -->
+
+<!-- JS script-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<script src="js/plugins/jquery.waypoints.min.js"></script>
+<script src="js/custom.js"></script>
+
+</body>
+</html>

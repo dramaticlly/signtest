@@ -153,6 +153,18 @@ module.exports = function(app) {
         });
     });
 
+    app.get('/forget',function(req,res,next){
+        if(req.isAuthenticated()) {
+            console.log("logined User forgot password");
+        } else {
+            console.log("User forgot password");
+            res.render('forget',{title:'密码重置'});
+        }
+    });
+
+    app.post('/forget',function(req,res,next){
+        console.log("why you come to post");
+    });
 
 
     app.get('/logout',function(req,res,next){
