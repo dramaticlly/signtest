@@ -8,16 +8,16 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "async": "^1.4.2",
     "bcrypt": "latest",
     "body-parser": "^1.7.0",
     "bookshelf": "^0.8.2",
     "connect-flash": "^0.1.1",
     "connect-mongo": "~0.8.2",
     "cookie-parser": "latest",
-    "crypto": "latest",
+    "crypto": "0.0.3",
     "ejs": "^2.3.4",
     "express": "latest",
-    "express-flash": "0.0.2",
     "express-session": "latest",
     "express-validator": "latest",
     "forever": "latest",

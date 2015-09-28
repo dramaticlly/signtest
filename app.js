@@ -1,14 +1,14 @@
 var express 	  = require("express");
 var expressValidator = require("express-validator");
 var bodyParser 	  = require('body-parser');
+var bcrypt        = require('bcrypt');
 var session 	  = require('express-session');
 var cookieParser  = require('cookie-parser');
 var mysql		  = require('mysql');
-var flash 		  = require('express-flash');
+var flash 		  = require('connect-flash');
 var ejs 		  = require('ejs');
 var path 		  = require('path');
 var MongoStore 	  = require('connect-mongo')(session);
-var bcrypt        = require('bcrypt');
 var passport      = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 

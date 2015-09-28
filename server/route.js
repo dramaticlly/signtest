@@ -4,6 +4,11 @@
 var util          = require('util');
 var passport      = require('passport');
 var flash         = require('express-flash');
+var crypto        = require('crypto');
+var async         = require('async');
+
+// Use crypto for random token generalization & SHA1 hashes
+// use bcrypto for hashing the password(computationally expensive hashing)
 
 var AM            = require('./module/AccountManager');
 module.exports = function(app) {
@@ -156,6 +161,7 @@ module.exports = function(app) {
     app.get('/forget',function(req,res,next){
         if(req.isAuthenticated()) {
             console.log("logined User forgot password");
+            res.redirect('/');
         } else {
             console.log("User forgot password");
             res.render('forget',{title:'密码重置'});
@@ -164,6 +170,55 @@ module.exports = function(app) {
 
     app.post('/forget',function(req,res,next){
         console.log("why you come to post");
+        req.checkBody('email','请输入有效的邮箱').isEmail();
+        var errors = req.validationErrors(true);
+        if (errors){
+            // if validation erros, send 400, bad request
+            /*
+            req.flash('errors',errors);
+            return req.redirect('/forget');
+            */
+            // TODO, display form validation errors to user
+            res.status(400).send('There have been validation errors: '+util.inspect(errors));
+            return;
+        }
+        // async.waterfall is same as promise
+        async.waterfall([
+            function(done){
+                crypto.randomBytes(32,function(err,buf){
+                    var token = buf.toString('hex');
+                    console.log("my token: "+token);
+                    done(err,token);
+                });
+            },
+            function(token,done){
+                console.log("fetching email:{"+req.body.email.trim()+"}");
+                var d = new Date();
+                d.setHours(d.getHours()+12);
+                console.log("expiration time: "+d);
+                AM.pwdreset({
+                    email       :req.body.email.trim(),
+                    token       :token,
+                    expiration  :d //email expire in 12 hour
+                },function(err,user){
+                    if (err) {
+                        // TODO, req.flash(err,message)
+                        console.log(err.message);
+                    }
+                    else if (user.uid){
+                        console.log("user"+user.uid);
+                        done(err,token,user)
+                    }
+                })//end of pwdreset function in
+            },
+            function(token,user,done){
+                console.log("need to implement sendgrid and nodemailer");
+            }
+            ],function(err){
+            if(err) return next(err);
+            res.redirect('/forget');
+        });//end of async.waterfall
+        res.end();
     });
 
 
