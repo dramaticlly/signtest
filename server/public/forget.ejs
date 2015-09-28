@@ -10,30 +10,30 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                {{#if messages}}
+
                 <div id="flash-messages" class="container">
-                    {{#if messages.info}}
-                    <div class="alert alert-info">
-                        {{{flashMessages messages.info}}}
+                    <% if (messages.info) { %>
+                    <div class="alert alert-info" role="alert">
+                        <%= JSON.stringify(messages.info) %>
                     </div>
-                    {{/if}}
-                    {{#if messages.success}}
-                    <div class="alert alert-success">
-                        {{{flashMessages messages.success}}}
+                    <% } %>
+                    <% if (messages.success) { %>
+                    <div class="alert alert-success" role="alert">
+                        <%= JSON.stringify(messages.success) %>
                     </div>
-                    {{/if}}
-                    {{#if messages.warning}}
-                    <div class="alert alert-warning">
-                        {{{flashMessages messages.warning}}}
+                    <% } %>
+                    <% if (messages.warning) { %>
+                    <div class="alert alert-warning" role="alert">
+                        <%= JSON.stringify(messages.warning) %>
                     </div>
-                    {{/if}}
-                    {{#if messages.error}}
-                    <div class="alert alert-danger">
-                        {{{flashMessages messages.error}}}
+                    <% } %>
+                    <% if (messages.errors) { %>
+                    <div class="alert alert-danger" role="alert">
+                        <%= JSON.stringify(messages.errors) %>
                     </div>
-                    {{/if}}
+                    <% } %>
                 </div>
-                {{/if}}
+
                 <form class="form_alt sign-in-up__form" id="forgetForm" name="fgForm" role="form" action="/forget">
                     <fieldset>
                         <legend style="color: white">Forget Password</legend>

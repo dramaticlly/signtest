@@ -6,6 +6,8 @@ var passport      = require('passport');
 var flash         = require('express-flash');
 var crypto        = require('crypto');
 var async         = require('async');
+var nodemailer    = require('nodemailer');
+var secrets       = require('./module/config/sgcredential');
 
 // Use crypto for random token generalization & SHA1 hashes
 // use bcrypto for hashing the password(computationally expensive hashing)
@@ -163,6 +165,10 @@ module.exports = function(app) {
             console.log("logined User forgot password");
             res.redirect('/');
         } else {
+           // req.flash('errors','Error');
+           // req.flash('warning','warning');
+           // req.flash('info','Info');
+           // req.flash('success','Success');
             console.log("User forgot password");
             res.render('forget',{title:'密码重置'});
         }
@@ -183,6 +189,7 @@ module.exports = function(app) {
             return;
         }
         // async.waterfall is same as promise
+        var usermail = req.body.email.trim();
         async.waterfall([
             function(done){
                 crypto.randomBytes(32,function(err,buf){
@@ -192,18 +199,20 @@ module.exports = function(app) {
                 });
             },
             function(token,done){
-                console.log("fetching email:{"+req.body.email.trim()+"}");
+                console.log("fetching email:{"+usermail+"}");
                 var d = new Date();
                 d.setHours(d.getHours()+12);
                 console.log("expiration time: "+d);
                 AM.pwdreset({
-                    email       :req.body.email.trim(),
+                    email       :usermail,
                     token       :token,
                     expiration  :d //email expire in 12 hour
                 },function(err,user){
                     if (err) {
                         // TODO, req.flash(err,message)
                         console.log(err.message);
+                        console.log('req.flash!');
+                        req.flash('error',err.message);
                     }
                     else if (user.uid){
                         console.log("user"+user.uid);
@@ -212,13 +221,36 @@ module.exports = function(app) {
                 })//end of pwdreset function in
             },
             function(token,user,done){
-                console.log("need to implement sendgrid and nodemailer");
+                var transporter = nodemailer.createTransport({
+                    service: 'SendGrid',
+                    auth: {
+                        user: secrets.sendgrid.user,
+                        pass: secrets.sendgrid.password
+                    }
+                });
+                var mailOptions = {
+                    to: usermail,
+                    from: 'healthwee@gmail.com',
+                    subject: 'Your healthwee password reset link',
+                    text: 'Hello,\n\n' +
+                    'This is the password reset link for your account ' + usermail + ' in healthWe.\n\n' +
+                    'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                    'http://' + req.headers.host + '/reset/' + token + '\n\n' +
+                    'Please note that the above link will expire in 12 hours\n\n' +
+                    'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+                };
+                transporter.sendMail(mailOptions, function(err) {
+                    console.log('Your password reset link has been sent to your email:'+usermail);
+                    req.flash('success', 'Success! Your password reset link has been sent to your email.');
+                    done(err);
+                });
+                console.log("email sent to"+usermail);
             }
             ],function(err){
             if(err) return next(err);
-            res.redirect('/forget');
+            //res.redirect('/forget');
+            res.render('forget',{title:'密码重置'});
         });//end of async.waterfall
-        res.end();
     });
 
 
