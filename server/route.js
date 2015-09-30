@@ -209,7 +209,6 @@ module.exports = function(app) {
                     expiration  :d //email expire in 12 hour
                 },function(err,user){
                     if (err) {
-                        // TODO, req.flash(err,message)
                         console.log(err.message);
                         console.log('req.flash!');
                         req.flash('error',err.message);
@@ -239,17 +238,19 @@ module.exports = function(app) {
                     'Please note that the above link will expire in 12 hours\n\n' +
                     'If you did not request this, please ignore this email and your password will remain unchanged.\n'
                 };
+
                 transporter.sendMail(mailOptions, function(err) {
                     console.log('Your password reset link has been sent to your email:'+usermail);
                     req.flash('success', 'Success! Your password reset link has been sent to your email.');
                     done(err);
                 });
-                console.log("email sent to"+usermail);
+                //console.log("email sent to"+usermail);
             }
             ],function(err){
             if(err) return next(err);
-            //res.redirect('/forget');
-            res.render('forget',{title:'密码重置'});
+            res.redirect('/forget');
+            //res.render('forget_msg');
+            //res.render('forget',{title:'密码重置'});
         });//end of async.waterfall
     });
 
