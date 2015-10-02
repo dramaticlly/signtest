@@ -115,7 +115,8 @@ $("#forgetForm").submit(function(event){
     $.post( url, {email:email} )
         // Put the results in a div
         .done(function( data ) {
-            console.log('Done'+data);
+            //console.log('Done'+data);
+            $('#body_wrapper').html(data);
             //location.replace(data);
             //$('#flash-messages').html(data);
             // location.replace("/");

@@ -49,9 +49,24 @@ passport.deserializeUser(function(username, done) {
 
 /* app configuration */
 app.set('port',5050);
-app.use(express.static(__dirname+'/server/public'));
-app.engine('handlebars',exphbs({defaultlayout:'main'}));
+// When you add public to those URLs, it will be looking in /public for a folder called public, which it won't find.
+app.use(express.static(__dirname+'/public'));
+
+// Create `ExpressHandlebars` instance with a default layout.
+var exphbs = exphbs.create({
+	defaultLayout: 'main',
+	//helpers      : helpers,
+
+	// Uses multiple partials dirs, templates in "shared/templates/" are shared
+	// with the client-side of the app (see below).
+	partialsDir: [
+	//	'shared/templates/',
+		'views/partials/'
+	]
+});
+app.engine('handlebars',exphbs.engine);
 app.set('view engine','handlebars');
+
 //app.set('views', path.join(__dirname, '/server/public'));
 //app.set('view engine', 'ejs');
 

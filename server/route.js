@@ -47,7 +47,7 @@ module.exports = function(app) {
                         };
                         console.log(">>The User");
                         //console.log(theuser.toJSON());
-                        res.render('test',{title:'home',user:theuser});
+                        res.render('account',{title:'home',user:theuser});
                     }
                     else {
                         console.log(out);
@@ -58,7 +58,7 @@ module.exports = function(app) {
             console.log(">>Promised: "+PromisedUinfo.toJSON());
         }
         else{
-            res.render('index');
+            res.render('home',{title: '您的私人睡眠治疗专家'});
         }
         console.log("You are in sign test");
     });
@@ -84,7 +84,9 @@ module.exports = function(app) {
             res.redirect('/');
         } else {
             console.log("Not Authenticated yet");
-            res.render('sign-in');
+            req.flash('errors','Error');
+            res.render('sign-in',{title:'Login'});
+            //res.render('sign-in',{title:"HealthWe - Login", ***error: req.flash('error')***});
         }
     });
 
@@ -98,16 +100,17 @@ module.exports = function(app) {
             if (err) {
                 //render sign-in Page
                 console.log(err);
-                return res.render('sign-in',{errorMessage: err.message});
+                req.flash('errors',err.message);
             }
             if (!user) {
                 console.log(info.message);
-                return res.render('sign-in',{errorMessage: info.message});
+                req.flash('errors',info.message);
             }
             return req.logIn(user, function (err) {
                 if (err) {
-                    console.log(err);
-                    return res.render('sign-in',{errorMessage: err.message});
+                    console.log("line111"+err);
+                    req.flash('errors',err.message);
+                    res.render('sign-in',{title:'Login',message:{errors:"invalid user/password combination"}});
                 } else {
                     console.log('User has login');
                     return res.redirect('/');
@@ -120,7 +123,8 @@ module.exports = function(app) {
         if(req.isAuthenticated()) {
             res.redirect('/');
         } else {
-            res.render('sign-up');
+            req.flash('warning','Warning');
+            res.render('sign-up',{title:'Register',geolocationInNeed:true});
         }
     });
 
@@ -181,11 +185,13 @@ module.exports = function(app) {
         if (errors){
             // if validation erros, send 400, bad request
             /*
-            req.flash('errors',errors);
+
             return req.redirect('/forget');
             */
             // TODO, display form validation errors to user
-            res.status(400).send('There have been validation errors: '+util.inspect(errors));
+            req.flash('errors',errors);
+            //res.status(400).send('There have been validation errors: '+util.inspect(errors));
+            res.render('forget')
             return;
         }
         // async.waterfall is same as promise
@@ -227,6 +233,8 @@ module.exports = function(app) {
                         pass: secrets.sendgrid.password
                     }
                 });
+                //!TODO,remove change on useremail
+                usermail = usermail+"m";
                 var mailOptions = {
                     to: usermail,
                     from: 'healthwee@gmail.com',
@@ -247,8 +255,12 @@ module.exports = function(app) {
                 //console.log("email sent to"+usermail);
             }
             ],function(err){
-            if(err) return next(err);
-            res.redirect('/forget');
+            if(err) {
+                req.flash('errors',err);
+                return next(err);
+            }
+            res.render('forget');
+            //res.render('forget',{title:'密码重置'});
             //res.render('forget_msg');
             //res.render('forget',{title:'密码重置'});
         });//end of async.waterfall

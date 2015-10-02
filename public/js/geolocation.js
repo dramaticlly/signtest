@@ -92,3 +92,4 @@ function geolocationInit() {
         options[selectedIndex].value = withCity[0];
     }
 }
+
