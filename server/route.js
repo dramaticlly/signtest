@@ -84,7 +84,7 @@ module.exports = function(app) {
             res.redirect('/');
         } else {
             console.log("Not Authenticated yet");
-            req.flash('errors','Error');
+            //req.flash('errors','Error');
             res.render('sign-in',{title:'Login'});
             //res.render('sign-in',{title:"HealthWe - Login", ***error: req.flash('error')***});
         }
@@ -101,16 +101,19 @@ module.exports = function(app) {
                 //render sign-in Page
                 console.log(err);
                 req.flash('errors',err.message);
+                return res.redirect('/sign-in');
             }
             if (!user) {
                 console.log(info.message);
                 req.flash('errors',info.message);
+                return res.redirect('/sign-in');
             }
             return req.logIn(user, function (err) {
                 if (err) {
                     console.log("line111"+err);
                     req.flash('errors',err.message);
-                    res.render('sign-in',{title:'Login',message:{errors:"invalid user/password combination"}});
+                    return res.redirect('/sign-in');
+                    //res.render('sign-in',{title:'Login',message:{errors:"invalid user/password combination"}});
                 } else {
                     console.log('User has login');
                     return res.redirect('/');
@@ -123,7 +126,7 @@ module.exports = function(app) {
         if(req.isAuthenticated()) {
             res.redirect('/');
         } else {
-            req.flash('warning','Warning');
+            //req.flash('warning','Warning');
             res.render('sign-up',{title:'Register',geolocationInNeed:true});
         }
     });
@@ -139,8 +142,11 @@ module.exports = function(app) {
         if (errors){
             // if validation erros, send 400, bad request
             // TODO, display form validation errors to user
-            res.status(400).send('There have been validation errors: '+util.inspect(errors));
+            req.flash('errors',"There have been validation errors: "+util.inspect(errors));
+            res.render('sign-up',{title:'Register',geolocationInNeed:true});
             return;
+            //res.status(400).send('There have been validation errors: '+util.inspect(errors));
+            //return;
         }
         /* update errors */
         // up till here, confirm 2 pwd are the same. so no need to pass in to addNewAccount function
@@ -156,7 +162,11 @@ module.exports = function(app) {
             //dateofbirth :"2008-7-04"
         },function(err,out){
         if (err) {
-            res.status(400).send('error-updating-account: '+err);
+            console.log(err);
+            req.flash('errors',errors);
+            res.render('sign-up',{title:'Register',geolocationInNeed:true});
+            return;
+            //res.status(400).send('error-updating-account: '+err);
         }
         else{
             res.redirect('/sign-in');
@@ -188,7 +198,6 @@ module.exports = function(app) {
 
             return req.redirect('/forget');
             */
-            // TODO, display form validation errors to user
             req.flash('errors',errors);
             //res.status(400).send('There have been validation errors: '+util.inspect(errors));
             res.render('forget')
@@ -217,7 +226,8 @@ module.exports = function(app) {
                     if (err) {
                         console.log(err.message);
                         console.log('req.flash!');
-                        req.flash('error',err.message);
+                        req.flash('errors',err.message);
+                        return res.redirect('/forget');
                     }
                     else if (user.uid){
                         console.log("user"+user.uid);
@@ -234,7 +244,7 @@ module.exports = function(app) {
                     }
                 });
                 //!TODO,remove change on useremail
-                usermail = usermail+"m";
+                //usermail = usermail+"m";
                 var mailOptions = {
                     to: usermail,
                     from: 'healthwee@gmail.com',
@@ -256,7 +266,7 @@ module.exports = function(app) {
             }
             ],function(err){
             if(err) {
-                req.flash('errors',err);
+                //req.flash('errors',err);
                 return next(err);
             }
             res.render('forget');
