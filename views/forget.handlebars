@@ -1,0 +1,52 @@
+<div class="sign-in-up__wrapper">
+    <div class="container">
+        <div class="row" >
+            <div class="col-xs-12" style="vertical-align: middle">
+
+                <div id="flash-messages" class="container">
+                    {{#if messages.info }}
+                        <div class="alert alert-info" role="alert">
+                            {{ messages.info }}
+                        </div>
+                    {{/if}}
+
+                    {{#if messages.success }}
+                        <div class="alert alert-success" role="alert">
+                            {{ messages.success }}
+                        </div>
+                    {{/if}}
+                    {{#if messages.warning }}
+                        <div class="alert alert-warning" role="alert">
+                            {{ messages.warning }}
+                        </div>
+                    {{/if}}
+                    {{#if messages.errors }}
+                        <div class="alert alert-danger" role="alert">
+                            {{ messages.errors }}
+                        </div>
+                    {{/if}}
+                </div>
+
+                <form class="form_alt sign-in-up__form" id="forgetForm" name="fgForm" role="form" action="/forget">
+                    <fieldset>
+                        <legend style="color: white">Forget Password</legend>
+                        <p>请输入您的邮箱地址,我们会向已经注册的邮箱发送重设密码的链接</p>
+                        <div class="form-group">
+                            <label for="forget__email" class="sr-only">Enter email</label>
+                            <input type="email" class="form-control" id="forget__email" name="email" placeholder="电子邮箱" autofocus=true required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="forget__submit">找回密码</button>
+
+                    </fieldset>
+                </form>
+
+            </div>
+        </div>
+    </div> <!-- / .container -->
+</div> <!-- / .sign-in-up__wrapper -->
+
+<!-- JS script-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<script src="js/plugins/jquery.waypoints.min.js"></script>
+<script src="js/controll.js"></script>
