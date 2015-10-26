@@ -41,6 +41,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(username, done) {
+	//query the current user from database
 	new Model.User({user_name: username}).fetch().then(function(user) {
 		done(null, user);
 	});
@@ -63,6 +64,8 @@ var exphbs = exphbs.create({
 	//	'shared/templates/',
 		'views/partials/'
 	]
+	//, helperDir: 'views/helpers'
+
 });
 app.engine('handlebars',exphbs.engine);
 app.set('view engine','handlebars');

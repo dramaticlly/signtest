@@ -91,35 +91,70 @@ module.exports = function(app) {
     });
 
     app.post('/sign-in',function(req,res,next){
-        console.log("You are in sigin post");
-        // if authentication fail, user will be set tp false
-        // if exception occurred, err will be set
-        passport.authenticate('local',{successRedirect:'/',
-            failureRedirect: '/sign-in',failureFlash: true},function(err,user,info) {
-            //TODO: get all handler working
-            if (err) {
-                //render sign-in Page
-                console.log(err);
-                req.flash('errors',err.message);
-                return res.redirect('/sign-in');
-            }
-            if (!user) {
-                console.log(info.message);
-                req.flash('errors',info.message);
-                return res.redirect('/sign-in');
-            }
-            return req.logIn(user, function (err) {
-                if (err) {
-                    console.log("line111"+err);
-                    req.flash('errors',err.message);
-                    return res.redirect('/sign-in');
-                    //res.render('sign-in',{title:'Login',message:{errors:"invalid user/password combination"}});
-                } else {
-                    console.log('User has login');
-                    return res.redirect('/');
+        var ua = req.headers['user-agent'].toLowerCase();
+        var andr = /^.*android/i;
+        ///(android).|mobile|ip(hone|od)/i
+        console.log('user-agent'+ua);
+        if (andr.test(ua)){
+            console.log('request is from andorid application');
+            passport.authenticate('local',function (err,user,info){
+                if (err){
+                    // error with databases
+                    console.log(err);
+                    return res.status(406).json({authenticated:false,token:null});
                 }
+                if (!user){
+                    // cannot find the user in db
+                    console.log(info.message);
+                    return res.status(403).json({authenticated:false,token:null});
+                }
+                return req.logIn(user,function(err){
+                   if (err){
+                       return res.status(403).json({authenticated:false,token:null});
+                   }
+                   else{
+                       console.log('user login through mobile site');
+                       return res.status(302).json({authenticated:true,token:null});
+                   }
+                });
             });
-          })(req,res,next);
+        }
+        else {
+            console.log("You are in sigin post, web request");
+            // if authentication fail, user will be set tp false
+            // if exception occurred, err will be set
+            passport.authenticate('local', {
+                successRedirect: '/',
+                failureRedirect: '/sign-in', failureFlash: true
+            }, function (err, user, info) {
+                //TODO: get all handler working
+                if (err) {
+                    //render sign-in Page
+                    console.log(err);
+                    req.flash('errors', err.message);
+                    return res.redirect('/sign-in');
+                }
+                if (!user) {
+                    console.log(info.message);
+                    req.flash('errors', info.message);
+                    return res.redirect('/sign-in');
+                }
+                return req.logIn(user, function (err) {
+                    if (err) {
+                        console.log("line111" + err);
+                        req.flash('errors', err.message);
+                        return res.redirect('/sign-in');
+                        //res.render('sign-in',{title:'Login',message:{errors:"invalid user/password combination"}});
+                    } else {
+                        /* detect request from android applications*/
+
+
+                        console.log('User has login');
+                        return res.redirect('/');
+                    }
+                });
+            })(req, res, next);
+        }
     });
 
     app.get('/sign-up',function(req,res){
@@ -186,6 +221,11 @@ module.exports = function(app) {
             console.log("User forgot password");
             res.render('forget',{title:'密码重置'});
         }
+    });
+
+    app.get('/reset/:token',function(req,res){
+       console.log("token: "+req.params.token);
+       console.log("date/time:"+Date.now());
     });
 
     app.post('/forget',function(req,res,next){
@@ -266,7 +306,7 @@ module.exports = function(app) {
             }
             ],function(err){
             if(err) {
-                //req.flash('errors',err);
+                req.flash('errors',err);
                 return next(err);
             }
             res.render('forget');
