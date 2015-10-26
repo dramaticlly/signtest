@@ -47,7 +47,7 @@ module.exports = function(app) {
                         };
                         console.log(">>The User");
                         //console.log(theuser.toJSON());
-                        res.render('account',{title:'home',user:theuser});
+                        res.render('account',{title:'home',user:theuser,layout:false});
                     }
                     else {
                         console.log(out);
@@ -58,7 +58,12 @@ module.exports = function(app) {
             console.log(">>Promised: "+PromisedUinfo.toJSON());
         }
         else{
-            res.render('home',{title: '您的私人睡眠治疗专家'});
+            if(req.xhr){// if request from ajax call
+                res.render('home',{title: '您的私人睡眠治疗专家',layout : false});
+            }
+            else {
+                res.render('home', {title: '您的私人睡眠治疗专家'});
+            }
         }
         console.log("You are in sign test");
     });
@@ -84,9 +89,12 @@ module.exports = function(app) {
             res.redirect('/');
         } else {
             console.log("Not Authenticated yet");
-            //req.flash('errors','Error');
-            res.render('sign-in',{title:'Login'});
-            //res.render('sign-in',{title:"HealthWe - Login", ***error: req.flash('error')***});
+            if(req.xhr){// if request from ajax call
+                res.render('sign-in',{title:'Login',layout:false});
+            }
+            else {
+                res.render('sign-in',{title:'Login'});
+            }
         }
     });
 
@@ -161,8 +169,12 @@ module.exports = function(app) {
         if(req.isAuthenticated()) {
             res.redirect('/');
         } else {
-            //req.flash('warning','Warning');
-            res.render('sign-up',{title:'Register',geolocationInNeed:true});
+            if (req.xhr){
+                res.render('sign-up',{title:'Register',geolocationInNeed:true,layout: false});
+            }
+            else {
+                res.render('sign-up',{title: 'Register', geolocationInNeed: true});
+            }
         }
     });
 
@@ -178,7 +190,7 @@ module.exports = function(app) {
             // if validation erros, send 400, bad request
             // TODO, display form validation errors to user
             req.flash('errors',"There have been validation errors: "+util.inspect(errors));
-            res.render('sign-up',{title:'Register',geolocationInNeed:true});
+            res.render('sign-up',{title:'Register',geolocationInNeed:true,layout:false});
             return;
             //res.status(400).send('There have been validation errors: '+util.inspect(errors));
             //return;
@@ -199,7 +211,7 @@ module.exports = function(app) {
         if (err) {
             console.log(err);
             req.flash('errors',errors);
-            res.render('sign-up',{title:'Register',geolocationInNeed:true});
+            res.render('sign-up',{title:'Register',geolocationInNeed:true,layout:false});
             return;
             //res.status(400).send('error-updating-account: '+err);
         }
@@ -219,7 +231,12 @@ module.exports = function(app) {
            // req.flash('info','Info');
            // req.flash('success','Success');
             console.log("User forgot password");
-            res.render('forget',{title:'密码重置'});
+            if (req.xhr){
+                res.render('forget',{title:'密码重置',layout:false});
+            }
+            else {
+                res.render('forget',{title:'密码重置'});
+            }
         }
     });
 
@@ -240,7 +257,7 @@ module.exports = function(app) {
             */
             req.flash('errors',errors);
             //res.status(400).send('There have been validation errors: '+util.inspect(errors));
-            res.render('forget')
+            res.render('forget',{layout:false});
             return;
         }
         // async.waterfall is same as promise
@@ -309,7 +326,7 @@ module.exports = function(app) {
                 req.flash('errors',err);
                 return next(err);
             }
-            res.render('forget');
+            res.render('forget',{layout:false});
             //res.render('forget',{title:'密码重置'});
             //res.render('forget_msg');
             //res.render('forget',{title:'密码重置'});
