@@ -109,21 +109,21 @@ module.exports = function(app) {
                 if (err){
                     // error with databases
                     console.log(err);
-                    return res.status(406).json({authenticated:false,token:null});
+                    return res.status(200).json({authenticated:false,token:null});
                 }
                 if (!user){
                     // cannot find the user in db
                     console.log(info.message);
-                    return res.status(403).json({authenticated:false,token:null});
+                    return res.status(200).json({authenticated:false,token:null});
                 }
                 return req.logIn(user,function(err){
                    if (err){
                        console.log(err);
-                       return res.status(403).json({authenticated:false,token:null});
+                       return res.status(200).json({authenticated:false,token:null});
                    }
                    else{
                        console.log('user login through mobile site');
-                       return res.status(302).json({authenticated:true,token:null});
+                       return res.status(200).json({authenticated:true,token:null});
                    }
                 });
             })(req, res, next);
