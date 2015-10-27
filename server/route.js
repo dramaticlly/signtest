@@ -104,7 +104,7 @@ module.exports = function(app) {
         ///(android).|mobile|ip(hone|od)/i
         console.log('user-agent'+ua);
         if (andr.test(ua)){
-            console.log('request is from andorid application');
+            console.log('request is from android application');
             passport.authenticate('local',function (err,user,info){
                 if (err){
                     // error with databases
@@ -118,6 +118,7 @@ module.exports = function(app) {
                 }
                 return req.logIn(user,function(err){
                    if (err){
+                       console.log(err);
                        return res.status(403).json({authenticated:false,token:null});
                    }
                    else{
@@ -125,7 +126,7 @@ module.exports = function(app) {
                        return res.status(302).json({authenticated:true,token:null});
                    }
                 });
-            });
+            })(req, res, next);
         }
         else {
             console.log("You are in sigin post, web request");
