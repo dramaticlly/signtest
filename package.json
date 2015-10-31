@@ -19,6 +19,7 @@
     "ejs": "^2.3.4",
     "express": "latest",
     "express-flash": "0.0.2",
+    "express-handlebars": "^2.0.1",
     "express-session": "latest",
     "express-validator": "latest",
     "forever": "latest",

@@ -47,7 +47,7 @@ module.exports = function(app) {
                         };
                         console.log(">>The User");
                         //console.log(theuser.toJSON());
-                        res.render('test',{title:'home',user:theuser});
+                        res.render('account',{title:'home',user:theuser,layout:false});
                     }
                     else {
                         console.log(out);
@@ -58,7 +58,12 @@ module.exports = function(app) {
             console.log(">>Promised: "+PromisedUinfo.toJSON());
         }
         else{
-            res.render('index');
+            if(req.xhr){// if request from ajax call
+                res.render('home',{title: '您的私人睡眠治疗专家',layout : false});
+            }
+            else {
+                res.render('home', {title: '您的私人睡眠治疗专家'});
+            }
         }
         console.log("You are in sign test");
     });
@@ -84,43 +89,93 @@ module.exports = function(app) {
             res.redirect('/');
         } else {
             console.log("Not Authenticated yet");
-            res.render('sign-in');
+            if(req.xhr){// if request from ajax call
+                res.render('sign-in',{title:'Login',layout:false});
+            }
+            else {
+                res.render('sign-in',{title:'Login'});
+            }
         }
     });
 
     app.post('/sign-in',function(req,res,next){
-        console.log("You are in sigin post");
-        // if authentication fail, user will be set tp false
-        // if exception occurred, err will be set
-        passport.authenticate('local',{successRedirect:'/',
-            failureRedirect: '/sign-in',failureFlash: true},function(err,user,info) {
-            //TODO: get all handler working
-            if (err) {
-                //render sign-in Page
-                console.log(err);
-                return res.render('sign-in',{errorMessage: err.message});
-            }
-            if (!user) {
-                console.log(info.message);
-                return res.render('sign-in',{errorMessage: info.message});
-            }
-            return req.logIn(user, function (err) {
-                if (err) {
+        var ua = req.headers['user-agent'].toLowerCase();
+        var andr = /^.*android/i;
+        ///(android).|mobile|ip(hone|od)/i
+        console.log('user-agent'+ua);
+        if (andr.test(ua)){
+            console.log('request is from android application');
+            passport.authenticate('local',function (err,user,info){
+                if (err){
+                    // error with databases
                     console.log(err);
-                    return res.render('sign-in',{errorMessage: err.message});
-                } else {
-                    console.log('User has login');
-                    return res.redirect('/');
+                    return res.status(200).json({authenticated:false,token:null});
                 }
-            });
-          })(req,res,next);
+                if (!user){
+                    // cannot find the user in db
+                    console.log(info.message);
+                    return res.status(200).json({authenticated:false,token:null});
+                }
+                return req.logIn(user,function(err){
+                   if (err){
+                       console.log(err);
+                       return res.status(200).json({authenticated:false,token:null});
+                   }
+                   else{
+                       console.log('user login through mobile site');
+                       return res.status(200).json({authenticated:true,token:null});
+                   }
+                });
+            })(req, res, next);
+        }
+        else {
+            console.log("You are in sigin post, web request");
+            // if authentication fail, user will be set tp false
+            // if exception occurred, err will be set
+            passport.authenticate('local', {
+                successRedirect: '/',
+                failureRedirect: '/sign-in', failureFlash: true
+            }, function (err, user, info) {
+                //TODO: get all handler working
+                if (err) {
+                    //render sign-in Page
+                    console.log(err);
+                    req.flash('errors', err.message);
+                    return res.redirect('/sign-in');
+                }
+                if (!user) {
+                    console.log(info.message);
+                    req.flash('errors', info.message);
+                    return res.redirect('/sign-in');
+                }
+                return req.logIn(user, function (err) {
+                    if (err) {
+                        console.log("line111" + err);
+                        req.flash('errors', err.message);
+                        return res.redirect('/sign-in');
+                        //res.render('sign-in',{title:'Login',message:{errors:"invalid user/password combination"}});
+                    } else {
+                        /* detect request from android applications*/
+
+
+                        console.log('User has login');
+                        return res.redirect('/');
+                    }
+                });
+            })(req, res, next);
+        }
     });
 
     app.get('/sign-up',function(req,res){
         if(req.isAuthenticated()) {
             res.redirect('/');
         } else {
-            res.render('sign-up');
+            if (req.xhr){
+                res.render('sign-up',{title:'Register',geolocationInNeed:true,layout: false});
+            }
+            else {
+                res.render('sign-up',{title: 'Register', geolocationInNeed: true});
+            }
         }
     });
 
@@ -135,8 +190,11 @@ module.exports = function(app) {
         if (errors){
             // if validation erros, send 400, bad request
             // TODO, display form validation errors to user
-            res.status(400).send('There have been validation errors: '+util.inspect(errors));
+            req.flash('errors',"There have been validation errors: "+util.inspect(errors));
+            res.render('sign-up',{title:'Register',geolocationInNeed:true,layout:false});
             return;
+            //res.status(400).send('There have been validation errors: '+util.inspect(errors));
+            //return;
         }
         /* update errors */
         // up till here, confirm 2 pwd are the same. so no need to pass in to addNewAccount function
@@ -152,7 +210,11 @@ module.exports = function(app) {
             //dateofbirth :"2008-7-04"
         },function(err,out){
         if (err) {
-            res.status(400).send('error-updating-account: '+err);
+            console.log(err);
+            req.flash('errors',errors);
+            res.render('sign-up',{title:'Register',geolocationInNeed:true,layout:false});
+            return;
+            //res.status(400).send('error-updating-account: '+err);
         }
         else{
             res.redirect('/sign-in');
@@ -170,8 +232,18 @@ module.exports = function(app) {
            // req.flash('info','Info');
            // req.flash('success','Success');
             console.log("User forgot password");
-            res.render('forget',{title:'密码重置'});
+            if (req.xhr){
+                res.render('forget',{title:'密码重置',layout:false});
+            }
+            else {
+                res.render('forget',{title:'密码重置'});
+            }
         }
+    });
+
+    app.get('/reset/:token',function(req,res){
+       console.log("token: "+req.params.token);
+       console.log("date/time:"+Date.now());
     });
 
     app.post('/forget',function(req,res,next){
@@ -181,11 +253,12 @@ module.exports = function(app) {
         if (errors){
             // if validation erros, send 400, bad request
             /*
-            req.flash('errors',errors);
+
             return req.redirect('/forget');
             */
-            // TODO, display form validation errors to user
-            res.status(400).send('There have been validation errors: '+util.inspect(errors));
+            req.flash('errors',errors);
+            //res.status(400).send('There have been validation errors: '+util.inspect(errors));
+            res.render('forget',{layout:false});
             return;
         }
         // async.waterfall is same as promise
@@ -211,7 +284,8 @@ module.exports = function(app) {
                     if (err) {
                         console.log(err.message);
                         console.log('req.flash!');
-                        req.flash('error',err.message);
+                        req.flash('errors',err.message);
+                        return res.redirect('/forget');
                     }
                     else if (user.uid){
                         console.log("user"+user.uid);
@@ -227,6 +301,8 @@ module.exports = function(app) {
                         pass: secrets.sendgrid.password
                     }
                 });
+                //!TODO,remove change on useremail
+                //usermail = usermail+"m";
                 var mailOptions = {
                     to: usermail,
                     from: 'healthwee@gmail.com',
@@ -247,8 +323,12 @@ module.exports = function(app) {
                 //console.log("email sent to"+usermail);
             }
             ],function(err){
-            if(err) return next(err);
-            res.redirect('/forget');
+            if(err) {
+                req.flash('errors',err);
+                return next(err);
+            }
+            res.render('forget',{layout:false});
+            //res.render('forget',{title:'密码重置'});
             //res.render('forget_msg');
             //res.render('forget',{title:'密码重置'});
         });//end of async.waterfall

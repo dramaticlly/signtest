@@ -1,37 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title><%= title %></title>
-    <link href="css/styles.css" rel="stylesheet">
-</head>
-<body>
 <div class="sign-in-up__wrapper">
     <div class="container">
         <div class="row" >
             <div class="col-xs-12" style="vertical-align: middle">
 
                 <div id="flash-messages" class="container">
-                    <% if (messages.info) { %>
-                    <div class="alert alert-info" role="alert">
-                        <%= JSON.stringify(messages.info) %>
-                    </div>
-                    <% } %>
-                    <% if (messages.success) { %>
-                    <div class="alert alert-success" role="alert">
-                        <%= JSON.stringify(messages.success) %>
-                    </div>
-                    <% } %>
-                    <% if (messages.warning) { %>
-                    <div class="alert alert-warning" role="alert">
-                        <%= JSON.stringify(messages.warning) %>
-                    </div>
-                    <% } %>
-                    <% if (messages.errors) { %>
-                    <div class="alert alert-danger" role="alert">
-                        <%= JSON.stringify(messages.errors) %>
-                    </div>
-                    <% } %>
+                    {{#if messages.info }}
+                        <div class="alert alert-info" role="alert">
+                            {{ messages.info }}
+                        </div>
+                    {{/if}}
+
+                    {{#if messages.success }}
+                        <div class="alert alert-success" role="alert">
+                            {{ messages.success }}
+                        </div>
+                    {{/if}}
+                    {{#if messages.warning }}
+                        <div class="alert alert-warning" role="alert">
+                            {{ messages.warning }}
+                        </div>
+                    {{/if}}
+                    {{#if messages.errors }}
+                        <div class="alert alert-danger" role="alert">
+                            {{ messages.errors }}
+                        </div>
+                    {{/if}}
                 </div>
 
                 <form class="form_alt sign-in-up__form" id="forgetForm" name="fgForm" role="form" action="/forget">
@@ -57,6 +50,3 @@
 <script src="js/bootstrap/bootstrap.min.js"></script>
 <script src="js/plugins/jquery.waypoints.min.js"></script>
 <script src="js/controll.js"></script>
-
-</body>
-</html>

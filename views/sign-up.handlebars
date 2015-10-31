@@ -1,0 +1,137 @@
+
+<!-- SIGN UP
+============================== -->
+<div class="sign-in-up__wrapper">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+
+                <h4 class="heading sign-in-up__heading">注册</h4>
+                <p class="heading__sub sign-in-up-heading__sub">
+                    网上注册只需花费不到一分钟的时间，便可还您夜夜好梦
+                </p>
+
+                {{#if messages.info }}
+                    <div class="alert alert-info" role="alert">
+                        {{ messages.info }}
+                    </div>
+                {{/if}}
+
+                {{#if messages.success }}
+                    <div class="alert alert-success" role="alert">
+                        {{ messages.success }}
+                    </div>
+                {{/if}}
+                {{#if messages.warning }}
+                    <div class="alert alert-warning" role="alert">
+                        {{ messages.warning }}
+                    </div>
+                {{/if}}
+                {{#if messages.errors }}
+                    <div class="alert alert-danger" role="alert">
+                        {{ messages.errors }}
+                    </div>
+                {{/if}}
+
+                <form class="form_alt sign-in-up__form" id="signupForm" name="suForm" role="form" action="/sign-up" method="POST" onsubmit="return checkBOD(this.bod)">
+                    <div class="form-group">
+                        <label for="sign-up__name" class="sr-only">Enter name</label>
+                        <input type="text" class="form-control" id="sign-up__name" placeholder="您的姓名" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sign-up__username" class="sr-only">Enter username</label>
+                        <input type="text" class="form-control" id="sign-up__username" placeholder="用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sign-up__email" class="sr-only">Enter email</label>
+                        <input type="email" class="form-control" id="sign-up__email" placeholder="电子邮箱" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sign-up__phone" class="sr-only">Enter phone</label>
+                        <input type="text" class="form-control" id="sign-up__phone" placeholder="手机" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sign-up__address" >您的家庭住址</label>
+                        <select name="province" onChange = "geolocationselect()"></select>
+                        <select name="city" onChange = "geolocationselect()"></select>
+                        <input type="text" class="form-control" id="sign-up__address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sign-up__gender" class="sr-only">Enter gender</label>
+                        <input type="radio" name="gender" value="m" checked> 男&nbsp&nbsp
+                        <input type="radio" name="gender" value="f"> 女&nbsp&nbsp
+                    </div>
+                    <!-- date picker do not support IE/firefox browser-->
+                    <div class="form-group">
+                        <label for="sign-up__bod" class="sr-only">Enter bod</label>
+                        <input type="text" class="form-control" pattern="\d{4}-\d{1,2}-\d{1,2}" placeholder="出身日期 yyyy-mm-dd" id="sign-up__bod" name="bod">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="sign-up__password" class="sr-only">Enter password</label>
+                                    <input type="password" class="form-control" id="sign-up__password" placeholder="设置密码" required>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="sign-up__password_repeat" class="sr-only">Repeat password</label>
+                                    <input type="password" class="form-control" id="sign-up__password_repeat" placeholder="确认密码" required>
+                                    <!-- TODO, maybe 需要captcha验证码-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"> 我同意<a href="#">服务条款 </a> 和 <a href="#">网络游戏用户隐私权保护和个人信息利用政策</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block" id="sign-up__submit">立即注册</button>
+                    <!-- <button type="submit" class="btn btn-primary btn-block" id="sign-up__submit" onclick="return myvalidate()">立即注册</button> -->
+                </form>
+
+                <!-- Sign In link -->
+                <!--
+                <div class="sign-in-up__footer">
+                  已有账号？马上 <a href="sign-in.html">登陆</a>
+                </div>
+                -->
+                <div class="sign-in-up__footer">
+                    已有账号？马上 <a href="/sign-in">登陆</a>
+                </div>
+
+            </div>
+        </div>
+    </div> <!-- / .container -->
+</div> <!-- / .sign-in-up__wrapper -->
+
+
+<!-- JavaScript
+================================================== -->
+
+<!-- JS Global -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<!--<script src='https://www.google.com/recaptcha/api.js'></script> -->
+<script src="js/bootstrap/bootstrap.min.js"></script>
+
+<!-- JS Plugins -->
+<script src="js/plugins/smoothscroll.js"></script>
+<script src="js/plugins/jquery.waypoints.min.js"></script>
+<script src="js/plugins/wow.min.js"></script>
+<script src="js/plugins/owl.carousel.min.js"></script>
+<script src="js/plugins/jquery.peity.min.js"></script>
+<script src="js/plugins/lightbox.min.js"></script>
+<!--<script src="js/plugins/contact.js"></script>-->
+
+<!-- JS Custom -->
+<script src="js/custom.js"></script>
+<script src="js/geolocation.js" type="text/javascript">
+    $(document).ready(function(){
+        geolocationInit();
+    });
+</script>
+<script src="js/controll.js"></script>
+
+

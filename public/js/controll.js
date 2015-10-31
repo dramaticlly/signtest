@@ -71,7 +71,7 @@ $("#signupForm").submit(function(event){
         // Put the results in a div
         .done(function( data ) {
             console.log('Done'+data);
-            location.replace("/");
+            $('#body_wrapper').html(data);
         })
         .fail(function(xhr,desc,err){
             console.log(xhr);
@@ -93,7 +93,8 @@ $("#signinForm").submit(function(event){
         // Put the results in a div
         .done(function( data ) {
             console.log('Done'+data);
-            location.replace("/");
+            $('#body_wrapper').html(data);
+            //location.replace("/");
         })
         .fail(function(xhr,desc,err){
             console.log(xhr);
@@ -116,12 +117,16 @@ $("#forgetForm").submit(function(event){
         // Put the results in a div
         .done(function( data ) {
             console.log('Done'+data);
+            $('#body_wrapper').html(data);
+            //location.replace(data);
+            //$('#flash-messages').html(data);
             // location.replace("/");
         })
         .fail(function(xhr,desc,err){
             console.log(xhr);
             console.log(desc);
             console.log(err);
+            //$('#body_wrapper').html(err);
         });
 
 });
