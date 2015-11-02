@@ -40,6 +40,16 @@
             })
         </script>
     {{/if}}
+
+    {{#if canvasInNeed}}
+        <script src="js/sleepchart.js" ></script>
+        <script>
+            $(window).on('load',function(){
+                //console.log('it never works');
+                chartinit();
+            })
+        </script>
+    {{/if}}
 </head>
 
 

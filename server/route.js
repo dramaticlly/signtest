@@ -68,6 +68,9 @@ module.exports = function(app) {
         console.log("You are in sign test");
     });
 
+    app.get('/sample',function(req,res){
+       res.render('chart',{title:'sample',canvasInNeed:true});
+    });
     /*
      express.js use cookie to store a session id/sid in the client browser
      every time user get sign-in page, check for their cookie
@@ -223,6 +226,29 @@ module.exports = function(app) {
         });
     });
 
+    app.get('/reset/:token',function(req,res){
+        console.log("token: "+req.params.token);
+        var rightnow = new Date();
+        console.log("date/time:"+rightnow);
+        //TODO, implement reset function and update pwd in db
+        if(req.isAuthenticated()) {
+            console.log("logined User reset password");
+            res.redirect('/');
+        } else {
+            // req.flash('errors','Error');
+            // req.flash('warning','warning');
+            // req.flash('info','Info');
+            // req.flash('success','Success');
+            console.log("User reset password");
+            if (req.xhr){
+                res.render('reset',{title:'密码更新',layout:false});
+            }
+            else {
+                res.render('reset',{title:'密码更新'});
+            }
+        }
+    });
+
     app.get('/forget',function(req,res,next){
         if(req.isAuthenticated()) {
             console.log("logined User forgot password");
@@ -240,11 +266,6 @@ module.exports = function(app) {
                 res.render('forget',{title:'密码重置'});
             }
         }
-    });
-
-    app.get('/reset/:token',function(req,res){
-       console.log("token: "+req.params.token);
-       console.log("date/time:"+Date.now());
     });
 
     app.post('/forget',function(req,res,next){
