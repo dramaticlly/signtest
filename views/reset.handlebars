@@ -1,0 +1,64 @@
+<div class="sign-in-up__wrapper">
+    <div class="container">
+        <div class="row" >
+            <div class="col-xs-12" style="vertical-align: middle">
+
+                <div id="flash-messages" class="container">
+                    {{#if messages.info }}
+                        <div class="alert alert-info" role="alert">
+                            {{ messages.info }}
+                        </div>
+                    {{/if}}
+
+                    {{#if messages.success }}
+                        <div class="alert alert-success" role="alert">
+                            {{ messages.success }}
+                        </div>
+                    {{/if}}
+                    {{#if messages.warning }}
+                        <div class="alert alert-warning" role="alert">
+                            {{ messages.warning }}
+                        </div>
+                    {{/if}}
+                    {{#if messages.errors }}
+                        <div class="alert alert-danger" role="alert">
+                            {{ messages.errors }}
+                        </div>
+                    {{/if}}
+                </div>
+
+                <form class="form_alt sign-in-up__form" id="resetForm" name="rsForm" role="form" action="/reset">
+                    <fieldset>
+                        <legend style="color: white">Reset Password</legend>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="sign-up__password" class="sr-only">Enter password</label>
+                                            <input type="password" class="form-control" id="sign-up__password" placeholder="设置密码" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="sign-up__password_repeat" class="sr-only">Repeat password</label>
+                                            <input type="password" class="form-control" id="sign-up__password_repeat" placeholder="确认密码" required>
+                                            <!-- TODO, maybe 需要captcha验证码-->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <button type="submit" class="btn btn-primary btn-block" id="reset__submit">更新密码</button>
+
+                    </fieldset>
+                </form>
+
+            </div>
+        </div>
+    </div> <!-- / .container -->
+</div> <!-- / .sign-in-up__wrapper -->
+
+<!-- JS script-->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="js/bootstrap/bootstrap.min.js"></script>
+<script src="js/plugins/jquery.waypoints.min.js"></script>
+<script src="js/controll.js"></script>
