@@ -122,8 +122,9 @@ module.exports = function(app) {
                        return res.status(200).json({authenticated:false,token:null});
                    }
                    else{
+                       //console.log(user.id);
                        console.log('user login through mobile site');
-                       return res.status(200).json({authenticated:true,token:null});
+                       return res.status(200).json({authenticated:user.id,token:null});
                    }
                 });
             })(req, res, next);
@@ -334,6 +335,57 @@ module.exports = function(app) {
         });//end of async.waterfall
     });
 
+    app.get('/calender',function(req,res){
+        //console.log("request date/time: "+req);
+        // better use request time?
+        var today = new Date();
+        var datelen = 7;
+        var timeslotcount = 6;
+        var today_json = today.toJSON();
+        //better to functionize dates array
+        var dateArray = [];
+        var timeslots = [];
+        var finaljson = [];
+
+        // generate weekly date starts from request init date
+        function generateDate(today) {
+            for (i = 0; i < datelen; i++) {
+                var newday = new Date(today.getFullYear(), today.getMonth(), today.getDate()+i);
+                dateArray.push(newday);
+            }
+            return dateArray
+        }
+
+        console.log('test function');
+        dateArray = generateDate(today)
+        console.log(dateArray);
+
+        // TODO, change doctor schedule with their preference, now it's randomly generated
+        for (i = 0; i < timeslotcount; i++){
+            //var even = ((i%2==0)?true:false);
+            var even = (i%2==0);
+            timeslots.push({id:i,booked:even});
+        }
+
+        for (i = 0; i < datelen; i++){
+           finaljson.push({date:dateArray[i],timeslots:timeslots})
+        }
+
+        console.log("server date/time: "+today+" json:"+today_json);
+        console.log('json:');
+        console.log(JSON.stringify(finaljson))
+        res.status(200).json(finaljson);
+        // will stringify is needed
+        //res.status(200).json(JSON.stringify(finaljson));
+    });
+
+    app.post('/calender',function(req,res,next){
+       var uid = req.params.id;
+        var verifiedUser =  (uid === undefined);
+        var did = ((verifiedUser)?-1:1);
+       res.status(200).json({allowed:verifiedUser,doctor:did});
+
+    });
 
     app.get('/logout',function(req,res,next){
         if(!req.isAuthenticated()) {
