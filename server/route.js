@@ -227,6 +227,7 @@ module.exports = function(app) {
     });
 
     app.get('/reset/:token',function(req,res){
+        // TODO: css/js load failure, debug later
         console.log("token: "+req.params.token);
         var rightnow = new Date();
         console.log("date/time:"+rightnow);
