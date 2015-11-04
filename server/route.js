@@ -181,7 +181,7 @@ module.exports = function(app) {
         if (andr.test(ua)){
             var mobilesession = (req.body.session === undefined) ? true : req.body.session;
             var options = {session:req.body.session};
-            var user = {id:req.body.id,username:req.body.username};
+            var user = {id:req.body.id,user_name:req.body.username};
             return req.logIn(user,options,function(err){
                if (err){
                    console.log(err);
