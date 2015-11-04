@@ -111,7 +111,6 @@ module.exports = function(app) {
             var mobilesession = (req.body.session === undefined) ? true : req.body.session;
             // create object with properties in js
             // access by options["session"] or options.session
-            var options = {session:mobilesession};
             console.log('request is from android application');
             passport.authenticate('local',options,function (err,user,info){
                 if (err){
@@ -172,6 +171,30 @@ module.exports = function(app) {
                     }
                 });
             })(req, res, next);
+        }
+    });
+
+    app.post('/mobile-login',function(req,res){
+        //extra work needed to attach the seesion for subsequent req from android app
+        var ua = req.headers['user-agent'].toLowerCase();
+        var andr = /^.*android/i;
+        if (andr.test(ua)){
+            var mobilesession = (req.body.session === undefined) ? true : req.body.session;
+            var options = {session:req.body.session};
+            var user = {id:req.body.id,username:req.body.username};
+            return req.logIn(user,options,function(err){
+               if (err){
+                   console.log(err);
+                   return res.status(200).json({sessionstored:false});
+               }
+                else{
+                   console.log('User has been login by passport');
+                   return res.status(200).json({sessionstored:true});
+               }
+            });
+        }
+        else{
+            res.send("404 - Not found");
         }
     });
 
