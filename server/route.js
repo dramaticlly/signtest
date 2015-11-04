@@ -396,17 +396,50 @@ module.exports = function(app) {
 
         console.log("server date/time: "+today+" json:"+today_json);
         console.log('json:');
-        console.log(JSON.stringify(finaljson))
+        console.log(JSON.stringify(finaljson));
         res.status(200).json(finaljson);
         // will stringify is needed
         //res.status(200).json(JSON.stringify(finaljson));
     });
 
     app.post('/calender',function(req,res,next){
-       var uid = req.params.id;
-        var verifiedUser =  (uid === undefined);
-        var did = ((verifiedUser)?-1:1);
-       res.status(200).json({allowed:verifiedUser,doctor:did});
+        var maxtimeslot = 6;
+        var verifiedUser = true ;
+        var abletobook = true;
+        var abletoconfrim;
+        var datetobook;
+        var did ;
+        /* request parameter */
+        var uid = req.body.uid;
+        var datewanted = req.body.date;
+        var slotid = req.body.timeslot_id;
+
+        function verifyexist(inputparameter){
+            return (typeof inputparameter !== 'undefined');
+        }
+        function verifyslot(slotid,maxtimeslot){
+            return (slotid >= 0 && slotid <= maxtimeslot);
+        }
+
+        if(req.isAuthenticated()) {
+            verifiedUser = true;
+            console.log("calender: user has login");
+        }
+        else{
+            verifiedUser = false;
+            console.log('i dont know you');
+        }
+
+        if (typeof (datewanted) !== 'undefined'){
+            datetobook = new Date(datewanted);
+            console.log("Client ["+uid+"] wanted to book:"+datetobook+" at timeslot "+slotid);
+        }
+
+        verifiedUser =  verifyexist(uid) && verifiedUser ;
+        abletobook = verifyexist(slotid) && abletobook && verifyslot(slotid,maxtimeslot);
+        abletoconfrim = verifiedUser && abletobook;
+        did = ((abletoconfrim)?1:-1);
+        res.status(200).json({booked:abletoconfrim,user:verifiedUser,timeslot:abletobook,doctorid:did});
 
     });
 
