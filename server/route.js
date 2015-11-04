@@ -7,11 +7,11 @@ var flash         = require('express-flash');
 var crypto        = require('crypto');
 var async         = require('async');
 var nodemailer    = require('nodemailer');
-var secrets       = require('./module/config/sgcredential');
 
 // Use crypto for random token generalization & SHA1 hashes
 // use bcrypto for hashing the password(computationally expensive hashing)
 
+var secrets       = require('./module/config/sgcredential');
 var AM            = require('./module/AccountManager');
 module.exports = function(app) {
 
@@ -108,8 +108,12 @@ module.exports = function(app) {
         ///(android).|mobile|ip(hone|od)/i
         console.log('user-agent'+ua);
         if (andr.test(ua)){
+            var mobilesession = (req.body.session === undefined) ? true : req.body.session;
+            // create object with properties in js
+            // access by options["session"] or options.session
+            var options = {session:mobilesession};
             console.log('request is from android application');
-            passport.authenticate('local',function (err,user,info){
+            passport.authenticate('local',options,function (err,user,info){
                 if (err){
                     // error with databases
                     console.log(err);
@@ -133,7 +137,7 @@ module.exports = function(app) {
                 });
             })(req, res, next);
         }
-        else {
+        else { // if request from web browser agent
             console.log("You are in sigin post, web request");
             // if authentication fail, user will be set tp false
             // if exception occurred, err will be set
@@ -432,7 +436,7 @@ module.exports = function(app) {
 
         if (typeof (datewanted) !== 'undefined'){
             datetobook = new Date(datewanted);
-            console.log("Client ["+uid+"] wanted to book:"+datetobook+" at timeslot "+slotid);
+            console.log("Client ["+uid+"] wanted to book:"+datetobook+" at timeslot git"+slotid);
         }
 
         verifiedUser =  verifyexist(uid) && verifiedUser ;
