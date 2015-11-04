@@ -104,6 +104,7 @@ module.exports = function(app) {
     app.post('/sign-in',function(req,res,next){
         var ua = req.headers['user-agent'].toLowerCase();
         var andr = /^.*android/i;
+        var authenFail = -1;
         ///(android).|mobile|ip(hone|od)/i
         console.log('user-agent'+ua);
         if (andr.test(ua)){
@@ -112,17 +113,17 @@ module.exports = function(app) {
                 if (err){
                     // error with databases
                     console.log(err);
-                    return res.status(200).json({authenticated:false,token:null});
+                    return res.status(200).json({authenticated:authenFail,token:null});
                 }
                 if (!user){
                     // cannot find the user in db
                     console.log(info.message);
-                    return res.status(200).json({authenticated:false,token:null});
+                    return res.status(200).json({authenticated:authenFail,token:null});
                 }
                 return req.logIn(user,function(err){
                    if (err){
                        console.log(err);
-                       return res.status(200).json({authenticated:false,token:null});
+                       return res.status(200).json({authenticated:authenFail,token:null});
                    }
                    else{
                        //console.log(user.id);
