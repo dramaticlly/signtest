@@ -175,11 +175,11 @@ exports.addNewAccount = function (newData,callback) {
                                 console.log("Unable to save userAccount " +err);
                                 callback(err);
                             });
-                    };
+                    }
                 });
             });
         }
-    })
+    });
 
     // hash the password and store
 }
