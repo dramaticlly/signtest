@@ -108,11 +108,11 @@ module.exports = function(app) {
         ///(android).|mobile|ip(hone|od)/i
         console.log('user-agent'+ua);
         if (andr.test(ua)){
-            var mobilesession = (req.body.session === undefined) ? true : req.body.session;
+            //var mobilesession = (req.body.session === undefined) ? true : req.body.session;
             // create object with properties in js
             // access by options["session"] or options.session
             console.log('request is from android application');
-            passport.authenticate('local',options,function (err,user,info){
+            passport.authenticate('local',function (err,user,info){
                 if (err){
                     // error with databases
                     console.log(err);
