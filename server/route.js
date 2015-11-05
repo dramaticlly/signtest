@@ -112,6 +112,14 @@ module.exports = function(app) {
             // create object with properties in js
             // access by options["session"] or options.session
             console.log('request is from android application');
+            var mobilesession = (req.body.session === undefined) ? true : req.body.session;
+            var options;
+                if (mobilesession){
+                    options= {session:req.body.session};
+                }
+            else{
+                    options = {};
+                }
             passport.authenticate('local',function (err,user,info){
                 if (err){
                     // error with databases
@@ -123,7 +131,7 @@ module.exports = function(app) {
                     console.log(info.message);
                     return res.status(200).json({authenticated:authenFail,token:null});
                 }
-                return req.logIn(user,function(err){
+                return req.logIn(user,options,function(err){
                    if (err){
                        console.log(err);
                        return res.status(200).json({authenticated:authenFail,token:null});
