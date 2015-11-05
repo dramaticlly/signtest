@@ -422,7 +422,7 @@ module.exports = function(app) {
         for (i = 0; i < timeslotcount; i++){
             //var even = ((i%2==0)?true:false);
             var even = (i%2==0);
-            timeslots.push({id:i,booked:even});
+            timeslots.push({id:i,booked:!even});
         }
 
         for (i = 0; i < datelen; i++){
