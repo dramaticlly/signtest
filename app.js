@@ -54,7 +54,7 @@ app.set('port',5050);
 app.use(express.static(__dirname+'/public'));
 
 // Create `ExpressHandlebars` instance with a default layout.
-var exphbs = exphbs.create({
+    exphbs = exphbs.create({
 	defaultLayout: 'main',
 	//helpers      : helpers,
 

@@ -36,25 +36,47 @@ app.post('/upload',function(req,res){
      * * * * * * * * * * * * **
      */
     form.encoding = 'utf-8';
-// default to os.tmpDir()
-    form.uploadDir = "/tmp/sleepdata";
+    // default to os.tmpDir()
+    // TODO has to create dir ahead of time on deployment
+    form.uploadDir = path.join(__dirname,'../sleepdata');
     form.keepExtensions = true;         //the files argument will contain arrays of files for inputs which submit multiple files using the HTML5 multiple attribute.
     form.type = 'multipart';
     form.multipart = true;
-    form.maxFieldSize = 50*1024*1024;   //50Mb memory allocated
+    form.maxFieldSize = 2*1024*1024;
 
     console.log(" ########## POST /upload form ####### "+ form.uploadDir);
-    if (typeof req.body.fileToUpload !== 'undefined'){
-        console.log("req.body.paramter"+req.body.fileToUpload.name);
-    }
-    console.log('empty');
+
+    //keep the upload file name
+    form
+        .on('file',function(field,file){
+            fs.rename(file.path,form.uploadDir + "/" + file.name);
+        })
+        .on('error', function (err) {
+            console.log("an error has occured with form upload");
+            console.log(util.inspect(err));
+        });
+
+    form.parse(req, function(err, fields, files) {
+        if(err){
+            console.log(util.inspect(err));
+            res.status(200).send(util.inspect(err.stack));
+        }
+        else{
+            res.status(200).send('received upload:\n\n'+util.inspect({fields: fields, files: files}));
+        }
+    });
+
+
+    /*
     form.parse(req, function(err,fields,files){
+        console.log(files);
+        console.log(fields);
        if(files.fileToUpload){
            console.log('File:'+files.fileToUpload.name);
            // In post request, data: formData (array of files to upload)
            // formData.append("fileToUpload", $scope.fileid);
            // need to remove all space in file names (ask stephen)
-           /*** Async, fs.readFile(filename[, options], callback) ***/
+           /*** Async, fs.readFile(filename[, options], callback) TODO/
            fs.readFile(files.fileToUpload.path,function(err,data){
                 fs.writeFile(path.join(form.uploadDir,files.fileToUpload.name),data,'utf8',function(err){
                    if (err){
@@ -74,6 +96,7 @@ app.post('/upload',function(req,res){
        }
        //res.status(200).send("received upload:\n\n"+util.inspect({fields:fields, files:files}));
     });
+*/
 
 });
 
