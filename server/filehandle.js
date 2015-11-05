@@ -38,7 +38,7 @@ app.post('/upload',function(req,res){
     form.encoding = 'utf-8';
     // default to os.tmpDir()
     // TODO has to create dir ahead of time on deployment
-    form.uploadDir = path.join(__dirname,'../sleepdata');
+    form.uploadDir = path.join(__dirname,'../../sleepdata');
     form.keepExtensions = true;         //the files argument will contain arrays of files for inputs which submit multiple files using the HTML5 multiple attribute.
     form.type = 'multipart';
     form.multipart = true;
