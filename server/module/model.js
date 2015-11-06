@@ -13,7 +13,7 @@ var User = DB.Model.extend({
 
 var UserInfo = DB.Model.extend({
     tableName:  'UserInfo',
-    idAttribute:'ID',
+    idAttribute:'user_id',
     user:function(){
         return this.belongsTo(User,'id');
     }

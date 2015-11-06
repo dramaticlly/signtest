@@ -2,16 +2,18 @@
     <div class="container">
         <div class="row">
             <div class="col-xs-12">
-                <legend style="color: white">Welcome <strong>{{ user.username }}</strong></legend>
-                <p class="heading__sub sign-in-up-heading__sub"> Profile Information </p>
                 <br />
+                <legend style="color: white">Welcome 尊敬的 <strong>{{user.name}}</strong>
+                    {{#if user.gender}}
+                         先生
+                    {{else}}
+                         女士
+                    {{/if}}
+                </legend>
+                    <br />
                 <ul>
-                <li>您的姓名是     {{user.name}}</li>
-                <!--<input type="text" value="123{{ user.name }}" readonly> -->
                 <br />
                 <li>您的邮箱是     {{ user.email }}</li>
-                <br />
-                <li>您的性别为     {{ user.gender }}</li>
                 <br />
                 <li>您的出身日期为  {{ user.dob }}</li>
                 <br />
@@ -19,7 +21,11 @@
                 <br />
                 <li>您的地址为     {{ user.address }}</li>
                 <br />
-                <li>您所在城市为宁波</li>
+                    {{#if user.subscription}}
+                        <li>您是 VIP付费用户</li>
+                    {{else}}
+                        <li>您是 免费用户</li>
+                    {{/if}}
                 </ul>
                 <br />
                 <a href="/logout" class="btn btn-warning" role="button">log out</a>

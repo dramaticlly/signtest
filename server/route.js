@@ -35,15 +35,20 @@ module.exports = function(app) {
                 if(out){
                     if(typeof out === "object"){
                         console.log(">>obj[out]: ");
+                        var bod = new Date(out.dateofbirth);
+                        var bodstr = bod.toDateString();
+                        var zhbod = bod.getFullYear() + "年"+bod.getMonth()+"月"+bod.getDate()+"日";
+                        console.log('date '+bod + bodstr + zhbod);
                        // console.log(out.toJSON());
                          var theuser = {
                             username:user.user_name,
                             name    :out.name,
                             email   :out.email,
-                            gender  :out.gender,
-                            dob     :out.dateofbirth,
+                            gender  :(out.gender === 'm'),
+                            dob     :zhbod,
                             phone   :out.phone,
-                            address :out.ADDRESS
+                            address :out.ADDRESS,
+                       subscription :(out.subscription === 1)
                         };
                         console.log(">>The User");
                         //console.log(theuser.toJSON());
