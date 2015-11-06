@@ -80,6 +80,29 @@ $("#signupForm").submit(function(event){
         });
 });
 
+$("#sidebar_signinForm").submit(function(event){
+    event.preventDefault();
+    // Get some values from elements on the page:
+    var $form = $( this ),
+        username = $form.find( "input[name='username']" ).val(),
+        password = $form.find( "input[name='password']").val(),
+        url = $form.attr( "action" );
+
+    // Send the data using post
+    $.post( url, {username:username,password:password } )
+        // Put the results in a div
+        .done(function( data ) {
+            console.log('Done'+data);
+            $('#body_wrapper').html(data);
+            //location.replace("/");
+        })
+        .fail(function(xhr,desc,err){
+            console.log(xhr);
+            console.log(desc);
+            console.log(err);
+        });
+});
+
 $("#signinForm").submit(function(event){
     event.preventDefault();
     // Get some values from elements on the page:
