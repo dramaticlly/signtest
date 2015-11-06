@@ -149,7 +149,7 @@ exports.addNewAccount = function (newData,callback) {
                                 if (uid != 0){
                                     //create new userInfo obj in db
                                     var signupUinfo = new Model.UserInfo({
-                                        ID           :uid,
+                                        user_id           :uid,
                                         name         :newData.name,
                                         email        :newData.email,
                                         ADDRESS      :newData.address,
@@ -190,7 +190,7 @@ exports.pwdreset = function(newData,callback){
     //!!!fail on fetch
     new Model.UserInfo({email:newData.email}).fetch().then(function(ResModel){
         if (ResModel) {
-            uid = ResModel.get("ID");
+            uid = ResModel.get("user_id");
             console.log('uid: ' + uid + typeof uid);
             new Model.User({id: uid})// update operation do not need fetch, so user name remain unknown!
                 .save({resetPwdToken:newData.token,resetPwdExpire:newData.expiration},{patch:true,method:"update"})
@@ -218,7 +218,7 @@ exports.getProfile = function(uid,callback){
     if (uid < 1){
         callback("Invalid uid");
     }
-    var retModel = Model.UserInfo.where({ID:uid}).fetch({required: true});
+    var retModel = Model.UserInfo.where({user_id:uid}).fetch({required: true});
     return retModel.then(function(model){
         //Promised obj has 4 attr, isFulfilled/isRejected/fulfillmentValue/rejectonReason
         if(model) { //if found user
