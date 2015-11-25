@@ -17,10 +17,18 @@ var UserInfo = DB.Model.extend({
     user:function(){
         return this.belongsTo(User,'id');
     }
+});
 
+var Transaction = DB.Model.extend({
+    tableName:  'Transaction',
+    idAttribute:'invoice_id',
+    user:function(){
+        return this.belongsTo(User,'id');
+    }
 });
 
 module.exports = {
     User: User,
-    UserInfo: UserInfo
+    UserInfo: UserInfo,
+    Transaction: Transaction
 };

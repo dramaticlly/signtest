@@ -13,6 +13,13 @@ var nodemailer    = require('nodemailer');
 
 var secrets       = require('./module/config/sgcredential');
 var AM            = require('./module/AccountManager');
+
+function validateAndroid(useragent){
+    var ua = useragent.toLowerCase();
+    var andr = /^.*android/i;
+    return (andr.test(ua));
+}
+
 module.exports = function(app) {
 
     // app routing
@@ -21,14 +28,13 @@ module.exports = function(app) {
         if(req.isAuthenticated()){
             //TODO, should use UID instead of username. can query username using UID
             var user = req.user;
-
             //console.log(user);
             if(user) {
                 user = user.toJSON();
                 console.log(user);
             }
             var uid = user.id;
-            var PromisedUinfo = AM.getProfile(uid,function(err,out){
+            var PromisedUinfo = AM.getProfile(uid,undefined,function(err,out){
                 if(err){
                     res.status(400).send('error-retriving-profile: '+err.stack);
                 }
@@ -72,6 +78,67 @@ module.exports = function(app) {
         }
         console.log("You are in sign test");
     });
+
+
+    app.post('/userinfo',function(req,res){
+        /*
+        handle the request from andorid client
+        param: uid
+        return: UserInfo[name,subscription,email], Transaction[invoice_date]
+         */
+        var ua = req.headers['user-agent'];
+        if (validateAndroid(ua)){
+            var uid = req.body.uid;
+            var option = 'email';
+            var customeremail = undefined;
+            var record = {};
+
+            function getEmail(emailcb){
+                AM.getProfile(uid,option,function(err,out){
+                    if (out && typeof out === "object"){
+                        customeremail = out.attribute;
+                        console.log('ce:'+customeremail);
+                        emailcb(err,customeremail)
+                    }
+                    else{
+                        emailcb(err)
+                    }
+                });
+            }
+            function getTransaction(email,transactioncb){
+                AM.getTransaction(uid,function(err,out){
+                    if(err){
+                        transactioncb(err);
+                    }
+                    else if(out){
+                        if(typeof out === "object") {
+                            var record = {
+                                name: out.customer_name,
+                                subscription: true,
+                                email: email,
+                                invoiceDate: out.invoice_date
+                            };
+                            console.log(record);
+                            res.status(200).json(record);//callback null means success
+                        }
+                    }
+                    //transactioncb(err);
+                });
+            }
+            async.waterfall([getEmail,getTransaction],function(err){
+               if (err){
+                   console.log(err);
+                   res.status(400).send("error found. process exit");
+               }
+
+            });
+
+        } //other than android
+        else {
+            res.send("404 - Not found");
+        }
+    });
+
 
     app.get('/sample',function(req,res){
        res.render('chart',{title:'sample',canvasInNeed:true});
