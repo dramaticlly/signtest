@@ -96,7 +96,7 @@ module.exports = function(app) {
             function getEmail(emailcb){
                 AM.getProfile(uid,option,function(err,out){
                     if (out && typeof out === "object"){
-                        customeremail = out.attribute;
+                        customeremail = out.option;// TODO. should use variable name or hardcode 'option'
                         console.log('ce:'+customeremail);
                         emailcb(err,customeremail)
                     }
@@ -127,8 +127,8 @@ module.exports = function(app) {
             }
             async.waterfall([getEmail,getTransaction],function(err){
                if (err){
-                   console.log(err);
-                   res.status(400).send("error found. process exit");
+                   console.log('asyncerr: '+err);
+                   res.status(400).send(err.message);
                }
 
             });

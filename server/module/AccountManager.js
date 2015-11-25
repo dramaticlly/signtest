@@ -119,16 +119,14 @@ exports.getProfile = function(uid,option,callback){
             }
             else{
                 console.log("only return "+option+" attribute");
-                tes = {attribute:model.attributes[option]};
+                tes = {option:model.attributes[option]};
                 console.log(tes);
             }
-            callback(null, tes);
+            callback(null, tes);//successful
         }
-        else {
-            callback(null,'User Do Not Exist');
+        else{
+            callback(new Model.UserInfo.NotFoundError('cannot find user profile'));
         }
-    }).catch(Model.UserInfo.NotFoundError,function(){
-        callback(err='user profile cannot be found',null);
     }).catch(function(err){
         console.log(err.stack);
     });
@@ -145,10 +143,8 @@ exports.getTransaction = function(uid,callback){
             callback(null, trans_attr);
         }
         else {
-            callback(null, "User Do not Have Transaction History");
+            callback(new Model.Transaction.NotFoundError('cannot find user transaction record'));
         }
-    }).catch(Model.Transaction.NotFoundError,function(){
-        callback(err='user transaction records cannot be found',null);
     }).catch(function(err){
         console.log(err.stack);
     });
