@@ -113,6 +113,7 @@ module.exports = function(app) {
                     else if(out){
                         if(typeof out === "object") {
                             var record = {
+                                success:true,
                                 name: out.customer_name,
                                 subscription: true,
                                 email: email,
@@ -128,7 +129,7 @@ module.exports = function(app) {
             async.waterfall([getEmail,getTransaction],function(err){
                if (err){
                    console.log('asyncerr: '+err);
-                   res.status(400).send(err.message);
+                   res.status(200).json({success:false,error:err.message});
                }
 
             });
@@ -174,12 +175,8 @@ module.exports = function(app) {
     });
 
     app.post('/sign-in',function(req,res,next){
-        var ua = req.headers['user-agent'].toLowerCase();
-        var andr = /^.*android/i;
-        var authenFail = -1;
-        ///(android).|mobile|ip(hone|od)/i
-        console.log('user-agent'+ua);
-        if (andr.test(ua)){
+        var ua = req.headers['user-agent'];
+        if (validateAndroid(ua)){
             //var mobilesession = (req.body.session === undefined) ? true : req.body.session;
             // create object with properties in js
             // access by options["session"] or options.session
@@ -256,9 +253,8 @@ module.exports = function(app) {
 
     app.post('/mobile-login',function(req,res){
         //extra work needed to attach the seesion for subsequent req from android app
-        var ua = req.headers['user-agent'].toLowerCase();
-        var andr = /^.*android/i;
-        if (andr.test(ua)){
+        var ua = req.headers['user-agent'];
+        if (validateAndroid(ua)){
             var mobilesession = (req.body.session === undefined) ? true : req.body.session;
             var options = {session:req.body.session};
             var user = {id:req.body.id,user_name:req.body.username};
