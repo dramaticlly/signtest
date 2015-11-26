@@ -33,5 +33,10 @@
     "passport-local": "^1.0.0",
     "path": "^0.11.14",
     "util": "latest"
+  },
+  "devDependencies": {
+    "mocha": "^2.3.4",
+    "should": "^7.1.1",
+    "supertest": "^1.1.0"
   }
 }

@@ -1,6 +1,7 @@
 var express 	  = require("express");
 var expressValidator = require("express-validator");
 var bodyParser 	  = require('body-parser');
+var logger    	  = require('morgan');
 var bcrypt        = require('bcrypt');
 var session 	  = require('express-session');
 var cookieParser  = require('cookie-parser');
@@ -50,6 +51,7 @@ passport.deserializeUser(function(username, done) {
 
 /* app configuration */
 app.set('port',5050);
+app.use(logger('dev'));
 // When you add public to those URLs, it will be looking in /public for a folder called public, which it won't find.
 app.use(express.static(__dirname+'/public'));
 
