@@ -6,6 +6,14 @@ var mysql   = require('mysql');
 var bcrypt  = require('bcrypt');
 var Model   = require('./model');
 
+/* TODO, modulize check user id. Internal use, low priority
+function validateuid (uid,callback){
+    if (uid < 1){
+        return callback("Invalid uid");
+    }
+}
+*/
+
 exports.addNewAccount = function (newData,callback) {
     // check if user already exist
     var useramePromise = new Model.User({user_name:newData.user}).fetch();
@@ -133,6 +141,13 @@ exports.getProfile = function(uid,option,callback){
 };
 
 exports.getTransaction = function(uid,callback){
+    /*
+     READ-only
+     Model: Transaction
+     param: uid
+     query Transaction model for 'customer_id' = uid
+     return 'staff_name','customer_name','visit_date','symptom','resolution','additional_note'
+     */
     if (uid < 1){
         callback("Invalid uid");
     }
@@ -150,6 +165,53 @@ exports.getTransaction = function(uid,callback){
     });
 };
 
+exports.getMedHistry = function(uid,callback){
+  /*
+   READ-only
+   Model: MedicalHistory
+   param: uid
+   query MedicalHistory model for 'customer_id' = uid
+   return 'staff_name','customer_name','visit_date','symptom','resolution','additional_note'
+  */
+    var retModel = Model.MedicalHistory.where({customer_id:uid}).fetchAll({required: true});
+    return retModel.then(function(model){
+
+       if(model) {
+           var history;
+           if (model.attributes)//single record
+           {
+               history = model.attributes;
+           }
+           else if (model.models)//multiple records
+           {
+               history = [];
+               var record;
+               for (record in model.models){
+                   history.push(model.models[record].attributes);
+               }
+           }
+           /* sample
+           sample model.attributes
+            { history_id: 3,
+            staff_id: 5,
+            customer_id: 49,
+            staff_name: 'john smith',
+            customer_name: '宁波市',
+            visit_date: Sat Nov 14 2015 05:51:46 GMT-0500 (EST),
+            symptom: '神经病',
+            resolution: '没得治',
+            additional_note: '啦啦啦' }
+            */
+            //console.log(history);
+            callback(null,history)
+       }
+        else{
+           callback(new Model.MedicalHistory.NotFoundError('cannot find user appointment history record'))
+       }
+    }).catch(function(err){
+        console.log(err.stack);
+    });
+};
 /*
  // some private function, mostly security concerns
 
@@ -180,11 +242,4 @@ exports.getTransaction = function(uid,callback){
  var validHash = salt + md5(plainPass + salt);
  callback(null, hashedPass === validHash);
  }
-
- // some mongoDB auxiliary methods
-
- var getObjectId = function(id)
- {
- return new require('mongodb').ObjectID(id);
- }
- */
+*/

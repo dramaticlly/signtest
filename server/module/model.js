@@ -27,8 +27,14 @@ var Transaction = DB.Model.extend({
     }
 });
 
+var MedicalHistory = DB.Model.extend({
+    tableName:  'AppointmentHistory',
+    idAttribute: 'history_id'
+});
+
 module.exports = {
     User: User,
     UserInfo: UserInfo,
-    Transaction: Transaction
+    Transaction: Transaction,
+    MedicalHistory: MedicalHistory
 };

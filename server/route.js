@@ -79,6 +79,18 @@ module.exports = function(app) {
         console.log("You are in sign test");
     });
 
+    app.post('/medhistry',function(req,res){
+        var uid = req.body.uid;
+        AM.getMedHistry(uid,function(err,out){
+            if (out && typeof out === 'object'){
+               res.status(200).json({success:true,out:out});
+           }
+            else{
+                console.log(err);
+                res.status(200).json({success:false,error:err.message});
+            }
+        });
+    });
 
     app.post('/userinfo',function(req,res){
         /*
@@ -92,7 +104,7 @@ module.exports = function(app) {
             var option = 'email';
             var customeremail = undefined;
             var record = {};
-
+            // 2 function for async waterfall
             function getEmail(emailcb){
                 AM.getProfile(uid,option,function(err,out){
                     if (out && typeof out === "object"){
@@ -139,7 +151,6 @@ module.exports = function(app) {
             res.send("404 - Not found");
         }
     });
-
 
     app.get('/sample',function(req,res){
        res.render('chart',{title:'sample',canvasInNeed:true});
