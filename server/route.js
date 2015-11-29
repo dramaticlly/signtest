@@ -80,16 +80,22 @@ module.exports = function(app) {
     });
 
     app.post('/medhistry',function(req,res){
-        var uid = req.body.uid;
-        AM.getMedHistry(uid,function(err,out){
-            if (out && typeof out === 'object'){
-               res.status(200).json({success:true,out:out});
-           }
-            else{
-                console.log(err);
-                res.status(200).json({success:false,error:err.message});
-            }
-        });
+        var ua = req.headers['user-agent'];
+        if (validateAndroid(ua)){
+            var uid = req.body.uid;
+            AM.getMedHistry(uid,function(err,out){
+                if (out && typeof out === 'object'){
+                    res.status(200).json({success:true,out:out});
+                }
+                else{
+                    console.log(err);
+                    res.status(200).json({success:false,error:err.message});
+                }
+            });
+        }
+        else {
+            res.send("404 - Not found");
+        }
     });
 
     app.post('/userinfo',function(req,res){
@@ -473,8 +479,6 @@ module.exports = function(app) {
     });
 
     app.get('/calender',function(req,res){
-        //console.log("request date/time: "+req);
-        // better use request time?
         var today = new Date();
         var datelen = 7;
         var timeslotcount = 6;
@@ -512,8 +516,6 @@ module.exports = function(app) {
         console.log('json:');
         console.log(JSON.stringify(finaljson));
         res.status(200).json(finaljson);
-        // will stringify is needed
-        //res.status(200).json(JSON.stringify(finaljson));
     });
 
     app.post('/calender',function(req,res,next){
@@ -535,6 +537,8 @@ module.exports = function(app) {
             return (slotid >= 0 && slotid <= maxtimeslot);
         }
 
+        //TODO, mobile device does not have working session
+        /*
         if(req.isAuthenticated()) {
             verifiedUser = true;
             console.log("calender: user has login");
@@ -543,6 +547,7 @@ module.exports = function(app) {
             verifiedUser = false;
             console.log('i dont know you');
         }
+        */
 
         if (typeof (datewanted) !== 'undefined'){
             datetobook = new Date(datewanted);
@@ -560,7 +565,7 @@ module.exports = function(app) {
     app.get('/logout',function(req,res,next){
         if(!req.isAuthenticated()) {
             //TODO, help user navigate back to homepage
-            res.status(404).send("Unable to find requested page");
+            res.status(200).send("Unable to find requested page");
         } else {
             console.log("User has log out");
             req.logout();

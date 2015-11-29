@@ -11,51 +11,45 @@ var server          = supertest.agent("http://localhost:5050");
 
 
 // suite of tests begin
-describe("SAMPLE unit test",function(){
+describe("static GET test",function(){
    //#1 GET test
-    it("GET home page",function(done){
+    it("Home page",function(done){
         server
             .get("/")
-            //.expect("Contect-type",/html/)
+            .expect("Content-type",/html/)
             .expect(200,done);
     });
 
-
-    // https://codeforgeek.com/2015/07/unit-testing-nodejs-application-using-mocha/
-    // #2 POST test
-    it("POST medical history",function(done){
-       this.timeout(3000);
-       var expjson = [{"history_id": 22, "staff_id": 5, "customer_id": 70, "staff_name": "john smith", "customer_name": "marcoks", "visit_date": "2015-11-28T21:23:00.000Z", "symptom": "insomnia", "resolution": "sleep more", "additional_note": "use health we"} ];
-       server
-           .post('/medhistry')
-           .send({uid:70})
-           .expect("Content-type",/json/)
-           .expect(200)
-           .end(function(err,res){
-              res.body.success.should.equal(true);
-              res.body.out.should.eql(expjson);
-              done();
-           });
-
-    });
-
-    it("POST UserInfo",function(done){
-        this.timeout(3000);
-        var expjson = {"success":true,"name":"marcoks","subscription":true,"email":"marcoks@gmail.com","invoiceDate":"2015-11-14T06:49:23.000Z"};
+    it("SignIn page",function(done){
         server
-            .post('/userinfo')
-            .set('User-agent','android')
-            .send({uid:70})
-            .expect("Content-type",/json/)
-            .expect(200)
-            .end(function(err,res){
-                res.body.success.should.equal(true);
-                res.body.should.eql(expjson);
-                done();
-            });
+            .get("/sign-in")
+            .expect("Content-type",/html/)
+            .expect(200,done);
     });
 
-    //#3 404 error
+    it("SignUp page",function(done){
+        server
+            .get("/sign-up")
+            .expect("Content-type",/html/)
+            .expect(200,done);
+    });
+
+    it("Forget PWD",function(done){
+        server
+            .get("/forget")
+            .expect("Content-type",/html/)
+            .expect(200,done);
+    });
+
+    it("Logout",function(done){
+        server
+            .get("/logout")
+            .expect("Content-type",/html/)
+            .expect(200,done);
+    });
+
+    //TODO: for signup testing, need to delete same user everytime
+
     it("Return 404",function(done){
        server
            .get("/random")

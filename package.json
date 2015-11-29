@@ -16,7 +16,6 @@
     "connect-mongo": "~0.8.2",
     "cookie-parser": "latest",
     "crypto": "0.0.3",
-    "ejs": "^2.3.4",
     "express": "latest",
     "express-flash": "0.0.2",
     "express-handlebars": "^2.0.1",
