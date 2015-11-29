@@ -82,9 +82,15 @@ exports.addNewAccount = function (newData,callback) {
 }
 
 exports.pwdreset = function(newData,callback){
+    /*
+     READ-WRITE
+     Model: R:UserInfo W:User
+     param: newData(email,token,expiration)
+     query UserInfo model for 'email' = newData.email to get uid
+     update the newData.token&expiration into User Table using uid
+     callback with uid
+     */
     var uid = -1;
-    //var emailPromise = new Model.UserInfo({email:newData.email}).fetch({required: true});
-    //!!!fail on fetch
     new Model.UserInfo({email:newData.email}).fetch().then(function(ResModel){
         if (ResModel) {
             uid = ResModel.get("user_id");
@@ -112,6 +118,14 @@ exports.pwdreset = function(newData,callback){
 };
 
 exports.getProfile = function(uid,option,callback){
+    /*
+     READ-only
+     Model: UserInfo
+     param: uid,option
+        option is name of single attribute needed to be returned
+     query UserInfo model for 'user_id' = uid
+     return 'user_name','name','email','gender','dateofbirth','phone','ADDRESS','subscription'
+     */
     if (uid < 1){
         callback("Invalid uid");
     }
@@ -146,7 +160,7 @@ exports.getTransaction = function(uid,callback){
      Model: Transaction
      param: uid
      query Transaction model for 'customer_id' = uid
-     return 'staff_name','customer_name','visit_date','symptom','resolution','additional_note'
+     return 'invoice_date','customer_name'
      */
     if (uid < 1){
         callback("Invalid uid");
@@ -206,7 +220,7 @@ exports.getMedHistry = function(uid,callback){
             callback(null,history)
        }
         else{
-           callback(new Model.MedicalHistory.NotFoundError('cannot find user appointment history record'))
+           callback(new Model.MedicalHistory.NotFoundError('cannot find user appointment history record'));
        }
     }).catch(function(err){
         console.log(err.stack);

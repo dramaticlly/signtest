@@ -48,7 +48,6 @@ passport.deserializeUser(function(username, done) {
 	});
 });
 
-
 /* app configuration */
 app.set('port',5050);
 app.use(logger('dev'));
@@ -71,10 +70,6 @@ app.use(express.static(__dirname+'/public'));
 });
 app.engine('handlebars',exphbs.engine);
 app.set('view engine','handlebars');
-
-//app.set('views', path.join(__dirname, '/server/public'));
-//app.set('view engine', 'ejs');
-
 // session part
 
 app.use(bodyParser.json());
