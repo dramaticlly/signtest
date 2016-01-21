@@ -3,3 +3,4 @@ node_modules
 local_history.patch
 server/sleepdata
 server/module/config/db.js
+server/module/config/sgcredential.js
