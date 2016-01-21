@@ -2,3 +2,4 @@ node_modules
 .idea/
 local_history.patch
 server/sleepdata
+server/module/config/db.js
